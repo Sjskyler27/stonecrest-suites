@@ -1,6 +1,6 @@
 <template>
-  <div :class="['faq-card', { open: isOpen }]" @click="toggleContent">
-    <div :class="['header', { open: isOpen }]">
+  <div :class="['faq-card', { open: isOpen }]">
+    <div :class="['header', { open: isOpen }]" @click="toggleContent">
       <div class="header-title">
         <slot name="header"></slot>
       </div>
@@ -24,13 +24,6 @@ export default {
   methods: {
     toggleContent() {
       this.isOpen = !this.isOpen;
-      //   if (this.isOpen) {
-      //     setTimeout(() => {
-      //       this.isContentVisible = true;
-      //     }, 500); // Adjust this time to match the max-height transition duration
-      //   } else {
-      //     this.isContentVisible = false;
-      //   }
     },
   },
 };
@@ -51,18 +44,20 @@ export default {
       rgba(17, 79, 154, 0) 100%
     ),
     #626367;
-  transition: max-height 0.7s ease-in-out;
+  transition: max-height 0.3s ease-in-out; /*determins how fast it opens and closes, the bigger your field the faster you want to close*/
   max-height: 50px; /* Set to closed height */
 }
 .faq-card.open {
-  max-height: 250px; /* Set to a large enough open height */
+  max-height: 600px; /* this sets the max size of the card when expanded, the bigger it is the longer delay it has when collapsing*/
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   align-self: stretch;
+  transition: border-bottom 0.3s ease-in-out;
+  border-bottom: 1px solid transparent;
 }
 .header.open {
   border-bottom: 1px solid white;
@@ -77,6 +72,27 @@ export default {
   font-weight: 700;
   line-height: normal;
 }
+/*underline animation*/
+.header {
+  position: relative; /* add this line */
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.header.open::before {
+  width: 100%;
+}
+/*end underline animation*/
+
 .icon {
   display: flex;
   width: 35px;
@@ -96,7 +112,7 @@ export default {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  max-height: 1000px;
+  /*max-height: 1000px;*/
   overflow: hidden;
 }
 </style>
