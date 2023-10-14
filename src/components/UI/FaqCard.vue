@@ -38,15 +38,13 @@ export default {
   align-items: flex-start;
   gap: 10px;
   border-radius: 20px;
-  background: radial-gradient(
-      214.11% 95.29% at 36.25% 142%,
-      #114f9a 0%,
-      rgba(17, 79, 154, 0) 100%
-    ),
-    #626367;
-  transition: max-height 0.3s ease-in-out; /*determins how fast it opens and closes, the bigger your field the faster you want to close*/
-  max-height: 50px; /* Set to closed height */
+  background: linear-gradient(to top right, #114f9a, #626367);
+  background-size: 100% 100%; /* Increase the size to extend beyond the card */
+  background-position: bottom left; /* Start from the bottom left corner */
+  transition: max-height 0.3s ease-in-out;
+  max-height: 50px;
 }
+
 .faq-card.open {
   max-height: 600px; /* this sets the max size of the card when expanded, the bigger it is the longer delay it has when collapsing*/
 }
