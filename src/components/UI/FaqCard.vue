@@ -1,6 +1,10 @@
 <template>
-  <div :class="['faq-card', { open: isOpen }]">
-    <div :class="['header', { open: isOpen }]" @click="toggleContent">
+  <div :class="['faq-card', { open: isOpen }]" ref="faqCard">
+    <div
+      :class="['header', { open: isOpen }]"
+      @click="toggleContent"
+      ref="header"
+    >
       <div class="header-title">
         <slot name="header"></slot>
       </div>
@@ -8,7 +12,7 @@
       <span class="icon" v-else>▼</span>
     </div>
     <div :class="['content', { open: isOpen }]" ref="contentDiv">
-      <slot></slot>
+      <slot ref="content"></slot>
     </div>
   </div>
 </template>
@@ -18,13 +22,37 @@ export default {
   data() {
     return {
       isOpen: false,
-      isContentVisible: false,
     };
   },
   methods: {
     toggleContent() {
       this.isOpen = !this.isOpen;
+      this.$nextTick(this.setMaxHeight); // Use nextTick to ensure DOM elements are ready
     },
+    setMaxHeight() {
+      if (this.isOpen) {
+        // If open, set max height to 100%
+        // const content = this.$refs.content;
+        // if (content) {
+        //   const contentHeight = content.offsetHeight + 10;
+        //   console.log(contentHeight);
+        //   this.$refs.faqCard.style.maxHeight = `${contentHeight}px`;
+        // }
+        this.$refs.faqCard.style.maxHeight = `${600}px`; // this is now how we update the max height when open
+      } else {
+        // If closed, calculate header height if it exists
+        const header = this.$refs.header;
+        if (header) {
+          const headerHeight = header.offsetHeight + 10;
+          console.log(headerHeight);
+          this.$refs.faqCard.style.maxHeight = `${headerHeight}px`;
+        }
+      }
+    },
+  },
+  mounted() {
+    // Set the initial max height when the component is mounted
+    this.setMaxHeight();
   },
 };
 </script>
@@ -33,7 +61,7 @@ export default {
 .faq-card {
   display: flex;
   width: 310px;
-  padding: 10px 20px;
+  padding: 6px 20px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
@@ -42,14 +70,18 @@ export default {
   background-size: 100% 100%; /* Increase the size to extend beyond the card */
   background-position: bottom left; /* Start from the bottom left corner */
   transition: max-height 0.3s ease-in-out;
-  max-height: 50px;
+  /*max-height: 50px;*/ /*we now get the max height dynamicaly*/
+  padding-bottom: 10px;
+  margin-bottom: 3px; /*likely not a good idea to have some margin in the component, but just in case*/
 }
 
 .faq-card.open {
-  max-height: 600px; /* this sets the max size of the card when expanded, the bigger it is the longer delay it has when collapsing*/
+  max-height: 100%; /* this sets the max size of the card when expanded, the bigger it is the longer delay it has when collapsing NOW USE FUNCTION TO SET*/
 }
 
 .header {
+  padding-top: 5px;
+  padding-bottom: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -110,7 +142,6 @@ export default {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  /*max-height: 1000px;*/
   overflow: hidden;
 }
 </style>

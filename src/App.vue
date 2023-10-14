@@ -9,13 +9,17 @@
       making.
     </FaqCard>
     <FaqCard class="faq">
-      <template v-slot:header> Headline </template>
+      <template v-slot:header>
+        Can I customize the setup of the room for my event?
+      </template>
       One approach to fix the delay while closing is to set the max-height
       dynamically based on the actual content height. This way, the transition
       will be smooth both when opening and closing the accordion.
     </FaqCard>
     <FaqCard class="faq">
-      <template v-slot:header> Headline </template>
+      <template v-slot:header>
+        Can I customize the setup of the conference room for my event?</template
+      >
       One approach to fix the delay while closing is to set the max-height
       dynamically based on the actual content height. This way, the transition
       will be smooth both when opening and closing the accordion. One approach
@@ -57,6 +61,6 @@ body {
 }
 
 .faq {
-  margin-top: 10px;
+  margin-top: 0px;
 }
 </style>
