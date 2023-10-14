@@ -1,5 +1,5 @@
 <template>
-  <div :class="['faq-card', { open: isOpen }]" ref="faqCard">
+  <div class="faq-card" ref="faqCard">
     <div
       :class="['header', { open: isOpen }]"
       @click="toggleContent"
@@ -11,8 +11,8 @@
       <span class="icon" v-if="isOpen">▲</span>
       <span class="icon" v-else>▼</span>
     </div>
-    <div :class="['content', { open: isOpen }]" ref="contentDiv">
-      <slot ref="content"></slot>
+    <div :class="['content', { open: isOpen }]" ref="content">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -27,26 +27,32 @@ export default {
   methods: {
     toggleContent() {
       this.isOpen = !this.isOpen;
-      this.$nextTick(this.setMaxHeight); // Use nextTick to ensure DOM elements are ready
+      this.$nextTick(this.setMaxHeight); // Use nextTick to ensure DOM elements are ready then set the height
     },
+    /*************************************
+     * SETMAXHEIGHT
+     * this function uses the height of the header and the height of the
+     * content to dynamically change the height of the card
+     * ***********************************/
     setMaxHeight() {
+      const header = this.$refs.header; //both open and closed need header height
+      let headerHeight = 0;
+      if (header) {
+        headerHeight = header.offsetHeight + 10; // add pading to header
+        // console.log(headerHeight);
+      }
       if (this.isOpen) {
-        // If open, set max height to 100%
-        // const content = this.$refs.content;
-        // if (content) {
-        //   const contentHeight = content.offsetHeight + 10;
-        //   console.log(contentHeight);
-        //   this.$refs.faqCard.style.maxHeight = `${contentHeight}px`;
-        // }
-        this.$refs.faqCard.style.maxHeight = `${600}px`; // this is now how we update the max height when open
-      } else {
-        // If closed, calculate header height if it exists
-        const header = this.$refs.header;
-        if (header) {
-          const headerHeight = header.offsetHeight + 10;
-          console.log(headerHeight);
-          this.$refs.faqCard.style.maxHeight = `${headerHeight}px`;
+        // header + content height
+        const content = this.$refs.content;
+        if (content) {
+          const contentHeight = content.scrollHeight + 20; // add padding to content
+          const totalHeight = contentHeight + headerHeight;
+          // console.log(contentHeight);
+          this.$refs.faqCard.style.maxHeight = `${totalHeight}px`; // sets the height of the card
         }
+      } else {
+        // If closed, just set it to header height
+        this.$refs.faqCard.style.maxHeight = `${headerHeight}px`; // sets the height of the card
       }
     },
   },
@@ -64,34 +70,29 @@ export default {
   padding: 6px 20px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 10px; /*determines the gap between the top of the content and the underline */
   border-radius: 20px;
   background: linear-gradient(to top right, #114f9a, #626367);
-  background-size: 100% 100%; /* Increase the size to extend beyond the card */
+  background-size: 100% 100%; /* Increase the gradient to extend beyond the card */
   background-position: bottom left; /* Start from the bottom left corner */
-  transition: max-height 0.3s ease-in-out;
-  /*max-height: 50px;*/ /*we now get the max height dynamicaly*/
-  padding-bottom: 10px;
+  transition: max-height 0.4s ease-in-out; /* sets how fast the card animates*/
   margin-bottom: 3px; /*likely not a good idea to have some margin in the component, but just in case*/
-}
-
-.faq-card.open {
-  max-height: 100%; /* this sets the max size of the card when expanded, the bigger it is the longer delay it has when collapsing NOW USE FUNCTION TO SET*/
 }
 
 .header {
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 7px; /* determines space between header title and underline currently is visible when open and closed */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px; /*determines how close the text can get to the arrow*/
   align-self: stretch;
-  transition: border-bottom 0.3s ease-in-out;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid transparent; /*hide it when closed*/
 }
-.header.open {
-  border-bottom: 1px solid white;
+
+.header:hover {
+  cursor: pointer;
 }
+
 .header-title {
   flex: 1 0 0;
   color: #fff;
@@ -102,9 +103,9 @@ export default {
   font-weight: 700;
   line-height: normal;
 }
-/*underline animation*/
+/*styles for the underline animation*/
 .header {
-  position: relative; /* add this line */
+  position: relative;
 }
 
 .header::before {
@@ -115,7 +116,7 @@ export default {
   width: 0;
   height: 1px;
   background: white;
-  transition: width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out; /*speed of the underline, keep it a little faster then the card aniamtion*/
 }
 
 .header.open::before {

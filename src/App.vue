@@ -10,7 +10,7 @@
     </FaqCard>
     <FaqCard class="faq">
       <template v-slot:header>
-        Can I customize the setup of the room for my event?
+        Can I customize there setups of the room for my event?
       </template>
       One approach to fix the delay while closing is to set the max-height
       dynamically based on the actual content height. This way, the transition
