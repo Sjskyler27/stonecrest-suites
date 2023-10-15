@@ -26,15 +26,17 @@ button:active {
 }
 
 .flat {
-  background-color: transparent;
-  color: #820263;
-  border: 2px solid #820263;
+  border-radius: 20px;
+  border: 2px solid #164686;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #164686;
 }
 
 .flat:hover,
 .flat:active {
-  border: 2px solid #a0398a;
-  color: #a0398a;
+  border: 2px solid #3073ca;
+  color: #3073ca;
   background-color: white;
 }
 </style>
