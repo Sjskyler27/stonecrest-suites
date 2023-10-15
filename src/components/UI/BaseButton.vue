@@ -12,7 +12,7 @@ button {
   padding: 0.75rem 1.5rem;
   font-family: inherit;
   background-color: #164686;
-  border: 1px solid #164686;
+  border: 3px solid #164686;
   color: white;
   cursor: pointer;
   border-radius: 20px;
