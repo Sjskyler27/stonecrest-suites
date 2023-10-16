@@ -18,6 +18,13 @@ export default {
       this.active = !this.active;
     },
   },
+  watch: {
+    // Watch for changes in the route
+    $route() {
+      // Set active to false when the route changes
+      this.active = false;
+    },
+  },
 };
 </script>
 

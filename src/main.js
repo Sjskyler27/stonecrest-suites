@@ -13,8 +13,8 @@ import HomePage from './pages/HomePage';
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/examples', component: ExamplePage },
     { path: '/', component: ExamplePage },
+    { path: '/examples', component: ExamplePage },
   ],
 });
 app.use(router);

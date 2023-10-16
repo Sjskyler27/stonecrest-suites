@@ -9,6 +9,7 @@
       <h1>Stonecrest Suites</h1>
     </a>
     <div class="menu-container" @click="toggleMenu">
+      <!-- <DarkToggle></DarkToggle> -->
       <div class="menu-icon"><HamburgerButton></HamburgerButton></div>
       <transition name="slide-fade">
         <div v-if="menuVisible" class="dropdown-menu">
@@ -26,9 +27,11 @@
 
 <script>
 import HamburgerButton from '../UI/HamburgerButton.vue';
+import DarkToggle from '../UI/DarkToggle.vue';
 export default {
   components: {
     HamburgerButton,
+    DarkToggle,
   },
   name: 'StonecrestHeader',
   data() {
