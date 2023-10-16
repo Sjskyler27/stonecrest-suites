@@ -9,15 +9,15 @@
       <h1>Stonecrest Suites</h1>
     </a>
     <div class="menu-container" @click="toggleMenu">
-      <div class="menu-icon">&#x2630;</div>
+      <div class="menu-icon"><HamburgerButton></HamburgerButton></div>
       <transition name="slide-fade">
         <div v-if="menuVisible" class="dropdown-menu">
-          <a href="/settings">Settings</a>
-          <a href="/profile">Profile</a>
-          <a href="/account">Account</a>
-          <a href="/support">Support</a>
-          <a href="/about">About Us</a>
-          <a href="/logout">Logout</a>
+          <router-link to="/settings">Settings</router-link>
+          <router-link to="/profile">Profile</router-link>
+          <router-link to="/account">Account</router-link>
+          <router-link to="/support">Support</router-link>
+          <router-link to="/about">About Us</router-link>
+          <router-link to="/logout">Logout</router-link>
         </div>
       </transition>
     </div>
@@ -25,7 +25,11 @@
 </template>
 
 <script>
+import HamburgerButton from '../UI/HamburgerButton.vue';
 export default {
+  components: {
+    HamburgerButton,
+  },
   name: 'StonecrestHeader',
   data() {
     return {
@@ -90,7 +94,8 @@ export default {
   color: black;
 }
 
-.dropdown-menu a:hover {
+.dropdown-menu a:hover,
+a.router-link-active {
   color: #f5f5f5;
 }
 /* Animation styles */
