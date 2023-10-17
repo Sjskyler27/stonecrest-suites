@@ -1,25 +1,13 @@
-import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
-
 // create the app
+import { createApp } from 'vue';
 import App from './App.vue';
 const app = createApp(App);
 
-//import route specific components
-import ExamplePage from './pages/ExamplePage';
-import HomePage from './pages/HomePage';
-
-// add routing
-const router = createRouter({
-  history: createWebHistory(),
-  routes: [
-    { path: '/', component: ExamplePage },
-    { path: '/examples', component: ExamplePage },
-  ],
-});
+// get the created router
+import router from './router';
 app.use(router);
 
-// Global components
+// Add Global components
 import BaseCard from './components/UI/BaseCard.vue';
 import TheHeader from './components/layouts/TheHeader';
 import BaseButton from './components/UI/BaseButton';

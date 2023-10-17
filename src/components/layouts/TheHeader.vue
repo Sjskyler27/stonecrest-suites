@@ -83,9 +83,9 @@ export default {
   position: absolute;
   top: 100%;
   right: 0;
-  background: linear-gradient(to top right, #75a7e6, #e5e5e6);
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to top right, #90bbf0, #e9e9ea);
+  border: 1px solid #90bbf0;
+  box-shadow: 0 2px 8px #90bbf0;
   border-radius: 5px;
   color: white;
 }
