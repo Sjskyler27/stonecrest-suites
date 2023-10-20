@@ -47,7 +47,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 .stonecrest-header {
   display: flex;
   justify-content: space-between;
