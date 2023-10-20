@@ -6,8 +6,8 @@ export default {
   props: ['type', 'mode'],
 };
 </script>
-
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 button {
   padding: 0.75rem 1.5rem;
   font-family: inherit;

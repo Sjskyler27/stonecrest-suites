@@ -63,7 +63,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 .faq-card {
   display: flex;
   width: 310px;

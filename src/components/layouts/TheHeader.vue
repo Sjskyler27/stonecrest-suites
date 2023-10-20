@@ -61,7 +61,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: var(--primary-color);
+  color: $primary-color;
   font-family: Inika;
 }
 
@@ -84,9 +84,13 @@ export default {
   position: absolute;
   top: 100%;
   right: 0;
-  background: linear-gradient(to top right, #90bbf0, #e9e9ea);
-  border: 1px solid #90bbf0;
-  box-shadow: 0 2px 8px #90bbf0;
+  background: linear-gradient(
+    to top right,
+    lighten($primary-color, 50%),
+    #e9e9ea
+  );
+  border: 1px solid lighten($primary-color, 50%);
+  box-shadow: 0 2px 8px lighten($primary-color, 50%);
   border-radius: 5px;
   color: white;
 }

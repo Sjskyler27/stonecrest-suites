@@ -21,7 +21,8 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 .theme-toggle {
   display: flex;
   align-items: center;
