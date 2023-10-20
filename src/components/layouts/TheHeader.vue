@@ -60,7 +60,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #164686;
+  color: var(--primary-color);
   font-family: Inika;
 }
 
