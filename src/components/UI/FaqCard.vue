@@ -63,7 +63,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 .faq-card {
   display: flex;
   width: 310px;
@@ -72,7 +73,8 @@ export default {
   align-items: flex-start;
   gap: 10px; /*determines the gap between the top of the content and the underline */
   border-radius: 20px;
-  background: linear-gradient(to top right, #114f9a, #626367);
+  background: $primary-color;
+  background: linear-gradient(to top right, $primary-color, $secondary-color);
   background-size: 100% 100%; /* Increase the gradient to extend beyond the card */
   background-position: bottom left; /* Start from the bottom left corner */
   transition: max-height 0.4s ease-in-out; /* sets how fast the card animates*/

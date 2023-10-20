@@ -4,7 +4,8 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/main.scss';
 div {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
