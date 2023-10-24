@@ -7,7 +7,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: HomePage, redirect: '/examples' },
+    { path: '/', component: HomePage },
     { path: '/examples', component: ExamplePage },
   ],
 });
