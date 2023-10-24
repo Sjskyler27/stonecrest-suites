@@ -1,7 +1,7 @@
 <template>
   <div class="centered-container">
     <div class="info-text">
-      <h2>BOOK A ROOM WITH SIMPSON LAWFIRM TODAY</h2>
+      <h2>BOOK A ROOM WITH STONECREST SUITES TODAY</h2>
       <p>
         We are happy to have a variety of different rooms to meet your needs
         along with additional amenities to choose from.
