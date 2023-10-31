@@ -1,21 +1,17 @@
 <template>
   <div class="centered-container">
     <div class="info-text">
-      <h2>BOOK A ROOM WITH STONECREST SUITES TODAY</h2>
+      <h2>WELCOME TO THE ADMIN PAGE</h2>
       <p>
-        We are happy to have a variety of different rooms to meet your needs
-        along with additional amenities to choose from.
+        You add and edit things here including: faqs, general pricing, rooms and
+        ameneties.
       </p>
     </div>
     <router-link to="/examples">
-      <BaseButton style="margin-bottom: 10px">BOOK NOW!</BaseButton>
+      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
+      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
+      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
     </router-link>
-    <FaqCard class="faq" v-for="(faq, index) in faqList" :key="index">
-      <template v-slot:header>
-        {{ faq.FAQ_header }}
-      </template>
-      {{ faq.answer }}
-    </FaqCard>
   </div>
 </template>
 
@@ -34,11 +30,7 @@ export default {
     async fetchFAQData() {
       try {
         this.isLoading = true;
-        const apiUrl = process.env.VUE_APP_API_URL; // Access the environment variable
-        console.log('env:', apiUrl);
-        const response = await fetch(apiUrl + '/faqs', {
-          method: 'GET',
-        })
+        await fetch('https://stonecrast-api.onrender.com/api/faqs')
           .then(response => {
             if (response.ok) {
               return response.json();
