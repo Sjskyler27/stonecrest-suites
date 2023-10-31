@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       faqList: [], // Initialize an empty array for FAQ data
+      apiUrl: process.env.VUE_APP_API_URL,
     };
   },
   created() {
@@ -34,9 +35,8 @@ export default {
     async fetchFAQData() {
       try {
         this.isLoading = true;
-        const apiUrl = process.env.VUE_APP_API_URL; // Access the environment variable
-        console.log('env:', apiUrl);
-        const response = await fetch(apiUrl + '/faqs', {
+        console.log('env:', this.apiUrl);
+        const response = await fetch(this.apiUrl + '/faqs', {
           method: 'GET',
         })
           .then(response => {
