@@ -18,6 +18,7 @@
           <router-link to="/account">Account</router-link>
           <router-link to="/support">Support</router-link>
           <router-link to="/about">About Us</router-link>
+          <router-link to="/admin">Admin</router-link>
           <router-link to="/logout">Logout</router-link>
         </div>
       </transition>
@@ -55,6 +56,7 @@ export default {
   align-items: center;
   padding: 10px 20px;
   background-color: #fff;
+  border-bottom: 2px solid $primary-color;
 }
 
 .logo-title {

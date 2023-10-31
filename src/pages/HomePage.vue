@@ -35,7 +35,7 @@ export default {
     async fetchFAQData() {
       try {
         this.isLoading = true;
-        console.log('env:', this.apiUrl);
+        // console.log('env:', this.apiUrl);
         const response = await fetch(this.apiUrl + '/faqs', {
           method: 'GET',
         })

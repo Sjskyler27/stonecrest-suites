@@ -1,12 +1,6 @@
 <template>
-  <TheHeader title="SS"></TheHeader>
-  <div
-    style="
-      display: grid;
-      justify-content: center; /* Horizontally center */
-      align-items: center;
-    "
-  ></div>
+  <TheHeader class="TheHeader" title="SS"></TheHeader>
+  <div style="height: 100px"></div>
   <router-view></router-view>
 </template>
 <style>
@@ -14,6 +8,11 @@
 
 * {
   box-sizing: border-box;
+}
+.TheHeader {
+  position: fixed;
+  background-color: white;
+  width: 100%;
 }
 
 html {

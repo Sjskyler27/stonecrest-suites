@@ -1,18 +1,35 @@
 <template>
   <div class="faq-admin">
     <h2>Edit The FAQ</h2>
-    <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
-      <label :for="'faq-question-' + index">Question:</label>
-      <input :id="'faq-question-' + index" v-model="faq.question" />
+    <div v-for="faq in faqList" :key="faq.FAQ_id" class="faq-item">
+      <BaseCard>
+        <label :for="'faq-FAQ_header-' + faq.FAQ_id" class="faq-label"
+          >Question (ID: {{ faq.FAQ_id }}):</label
+        ><br />
+        <input
+          :id="'faq-FAQ_header-' + faq.FAQ_id"
+          v-model="faq.FAQ_header"
+          class="custom-input"
+        /><br />
 
-      <label :for="'faq-answer-' + index">Answer:</label>
-      <textarea :id="'faq-answer-' + index" v-model="faq.answer"></textarea>
+        <label :for="'faq-answer-' + faq.FAQ_id" class="faq-label"
+          >Answer:</label
+        ><br />
+        <textarea
+          :id="'faq-answer-' + faq.FAQ_id"
+          v-model="faq.answer"
+          class="custom-textarea"
+        ></textarea
+        ><br />
 
-      <button @click="deleteFaq(index)">Delete</button>
+        <BaseButton @click="deleteFaq(faq.id)" class="delete-button"
+          >Delete</BaseButton
+        >
+      </BaseCard>
     </div>
 
-    <button @click="addFaq">ADD FAQ</button>
-    <button @click="saveFaqs">Save Changes</button>
+    <BaseButton @click="addFaq" class="add-button">ADD FAQ</BaseButton>
+    <BaseButton @click="saveFaqs" class="save-button">Save Changes</BaseButton>
   </div>
 </template>
 
@@ -20,27 +37,52 @@
 export default {
   data() {
     return {
-      faqs: [
-        // Sample initial data. You can replace this with an API call to fetch existing FAQs.
-        {
-          question: 'How do I book a conference room online?',
-          answer: 'You can book a room by...',
-        },
-        // Add more FAQ items as needed
-      ],
+      faqList: [],
+      apiUrl: process.env.VUE_APP_API_URL,
     };
   },
+  mounted() {
+    // Fetch FAQs from your API when the component is mounted
+    this.fetchFAQData();
+  },
   methods: {
-    addFaq() {
-      this.faqs.push({ question: '', answer: '' });
+    async fetchFAQData() {
+      try {
+        this.isLoading = true;
+        // console.log('env:', this.apiUrl);
+        const response = await fetch(this.apiUrl + '/faqs', {
+          method: 'GET',
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+          })
+          .then(data => {
+            console.log(data);
+            const tempResults = [];
+            this.faqList = data; // Populate faqList with the response data
+          });
+      } catch (error) {
+        console.error('Error fetching FAQ data:', error);
+      }
     },
-    deleteFaq(index) {
-      this.faqs.splice(index, 1);
+    addFaq() {
+      this.faqs.push({ id: null, question: '', answer: '' });
+    },
+    deleteFaq(id) {
+      // You can implement the logic to delete an FAQ from your backend here
+      // Send a DELETE request to your API endpoint with the FAQ ID
+      // Update the state after successful deletion
+      console.log('Deleting FAQ with ID:', id);
     },
     async saveFaqs() {
       // Make an API call to save the changes to your backend
       try {
-        const response = await this.$http.post('/api/saveFaqs', this.faqs);
+        const response = await this.$http.post(
+          `${process.env.VUE_APP_API_URL}/faqs`,
+          this.faqs
+        );
         if (response.status === 200) {
           alert('FAQs saved successfully!');
         } else {
@@ -57,10 +99,51 @@ export default {
 
 <style scoped>
 /* Add your styles here. For instance: */
+/* Custom styles for input and textarea */
+.custom-input {
+  width: 100%; /* Make the input element full width */
+  padding: 8px; /* Add some padding for spacing */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 4px; /* Add border radius */
+  font-size: 14px; /* Adjust the font size */
+  white-space: nowrap; /* Prevent line breaks in the input */
+}
+
+.custom-textarea {
+  width: 100%; /* Make the textarea full width */
+  height: 200px;
+  padding: 8px; /* Add some padding for spacing */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 4px; /* Add border radius */
+  font-size: 14px; /* Adjust the font size */
+  resize: vertical; /* Allow vertical resizing of the textarea */
+}
 .faq-admin {
   padding: 20px;
 }
+
 .faq-item {
   margin-bottom: 15px;
+}
+
+.faq-label {
+  font-weight: bold;
+}
+
+/* Vertical Track */
+::-webkit-scrollbar {
+  width: 8px; /* Set the width of the vertical scrollbar */
+  background-color: #f5f5f5; /* Background color of the vertical track */
+}
+
+/* Vertical Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the vertical scrollbar handle */
+  border-radius: 4px; /* Rounded corners for the vertical handle */
+}
+
+/* Vertical Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the vertical handle on hover */
 }
 </style>

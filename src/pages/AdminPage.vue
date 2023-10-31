@@ -12,40 +12,23 @@
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
     </router-link>
+    <FAQEdit></FAQEdit>
   </div>
 </template>
 
 <script>
+import FAQEdit from '@/components/layouts/FAQEdit.vue';
 export default {
+  components: {
+    FAQEdit,
+  },
   data() {
     return {
       faqList: [], // Initialize an empty array for FAQ data
     };
   },
-  created() {
-    // Make the GET request when the component is created
-    this.fetchFAQData();
-  },
-  methods: {
-    async fetchFAQData() {
-      try {
-        this.isLoading = true;
-        await fetch('https://stonecrast-api.onrender.com/api/faqs')
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-          })
-          .then(data => {
-            console.log(data);
-            const tempResults = [];
-            this.faqList = data; // Populate faqList with the response data
-          });
-      } catch (error) {
-        console.error('Error fetching FAQ data:', error);
-      }
-    },
-  },
+  created() {},
+  methods: {},
 };
 </script>
 <style>
