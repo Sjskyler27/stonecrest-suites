@@ -12,26 +12,61 @@
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
     </router-link>
+
+    <infoForm :info="false" :isAdmin="true"></infoForm>
+    <div v-for="(info, index) in infoList" :key="index">
+      <BaseCard>
+        <infoForm :info="info" :isAdmin="true"></infoForm>
+      </BaseCard>
+    </div>
     <FAQEdit></FAQEdit>
   </div>
 </template>
 
 <script>
 import FAQEdit from '@/components/layouts/FAQEdit.vue';
+import infoForm from '@/components/forms/infoForm.vue';
 export default {
   components: {
+    infoForm,
     FAQEdit,
   },
   data() {
     return {
       faqList: [], // Initialize an empty array for FAQ data
+      infoList: [],
+      apiUrl: process.env.VUE_APP_API_URL,
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.fetchInfoData();
+  },
+  methods: {
+    async fetchInfoData() {
+      try {
+        this.isLoading = true;
+        // console.log('env:', this.apiUrl);
+        const response = await fetch(this.apiUrl + '/info', {
+          method: 'GET',
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+          })
+          .then(data => {
+            console.log(data);
+            const tempResults = [];
+            this.infoList = data; // Populate infoList with the response data
+          });
+      } catch (error) {
+        console.error('Error fetching info data:', error);
+      }
+    },
+  },
 };
 </script>
-<style>
+<style scoped lang="scss">
 .centered-container {
   display: flex;
   flex-direction: column;
@@ -40,12 +75,8 @@ export default {
   height: 100vh; /* Set the container to occupy the full viewport height */
 }
 
-.info-text {
-  width: 325px;
-}
-
 h2 {
-  color: #164686;
+  color: $primary-color;
   font-family: Inter;
   font-size: 19px;
   font-style: normal;
