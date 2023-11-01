@@ -17,6 +17,8 @@ button {
   cursor: pointer;
   border-radius: 20px;
   font-weight: 900;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 button:hover,
@@ -29,8 +31,9 @@ button:active {
   border-radius: 20px;
   border: 3px solid $primary-color;
   background: #fff;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: $primary-color;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .flat:hover,

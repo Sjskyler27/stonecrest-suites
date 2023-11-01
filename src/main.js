@@ -7,6 +7,10 @@ const app = createApp(App);
 import router from './router';
 app.use(router);
 
+//use store
+import store from './store.js';
+app.use(store);
+
 // Add Global components
 import BaseCard from './components/UI/BaseCard.vue';
 import TheHeader from './components/layouts/TheHeader';
