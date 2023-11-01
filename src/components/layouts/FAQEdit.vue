@@ -169,14 +169,14 @@ export default {
     async deleteFaq(id) {
       try {
         this.isLoading = true;
-        const response = await fetch(this.apiUrl + '/faq/' + id, {
+        const response = await fetch(this.apiUrl + '/faqs/' + id, {
           method: 'DELETE',
         });
 
         if (response.ok) {
           console.log('Deleting FAQ with ID:', id);
           console.log(response);
-          // location.reload();
+          location.reload();
           localStorage.setItem('message', `message ${id} Deleted`);
           localStorage.setItem('messageType', 'success');
         } else {
@@ -184,7 +184,7 @@ export default {
         }
       } catch (error) {
         console.error('Error DELETING FAQ data:', error);
-        // location.reload();
+        location.reload();
         localStorage.setItem('message', 'Message failed to delete');
         localStorage.setItem('messageType', 'error');
       } finally {
