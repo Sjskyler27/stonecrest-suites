@@ -23,8 +23,8 @@ button {
 
 button:hover,
 button:active {
-  background-color: #3073ca;
-  border-color: #3073ca;
+  background-color: lighten($primary-color, 30%);
+  border-color: lighten($primary-color, 30%);
 }
 
 .flat {
@@ -38,8 +38,8 @@ button:active {
 
 .flat:hover,
 .flat:active {
-  border: 3px solid #3073ca;
-  color: #3073ca;
+  border: 3px solid lighten($primary-color, 30%);
+  color: lighten($primary-color, 30%) 3073ca;
   background-color: white;
 }
 </style>

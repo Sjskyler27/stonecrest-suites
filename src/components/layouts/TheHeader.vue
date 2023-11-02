@@ -6,7 +6,7 @@
         alt="Stonecrest Suites Logo"
         class="logo"
       />
-      <h1>Stonecrest Suites</h1>
+      <h1>Stonecrest Rentals</h1>
     </a>
     <div class="menu-container" @click="toggleMenu">
       <!-- <DarkToggle></DarkToggle> -->
@@ -50,6 +50,7 @@ export default {
 
 <style scoped lang="scss">
 @import '@/assets/main.scss';
+
 .stonecrest-header {
   display: flex;
   justify-content: space-between;
@@ -69,15 +70,17 @@ export default {
 }
 
 .logo {
-  height: 70px;
+  height: 50px;
   margin-right: 10px;
+}
+.logo-title h1 {
+  font-size: 24px;
 }
 .menu-container {
   position: relative;
 }
 
 .menu-icon {
-  font-size: 24px;
   padding: 7px;
   cursor: pointer;
   position: relative;
@@ -123,5 +126,19 @@ a.router-link-active {
 .slide-fade-enter-to, .slide-fade-leave-from /* <- This is the alias for .slide-fade-leave in Vue 2.6+ */ {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (min-width: 600px) {
+  .logo-title h1 {
+    // Reduce the font size for small devices
+    font-size: 38px; // Adjust the size as needed
+  }
+
+  .logo {
+    height: 70px; // Adjust the logo size as well to keep the proportions
+  }
+  .menu-icon {
+    font-size: 24px;
+  }
 }
 </style>

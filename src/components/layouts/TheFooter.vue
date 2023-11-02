@@ -1,16 +1,16 @@
 <template>
   <div class="footer-container">
     <div class="contact-info">
-      <h2>CONTACT STONECREST RENTALS</h2>
+      <h3>CONTACT STONECREST RENTALS</h3>
       <p class="contact-text">To learn more call:</p>
       <p class="contact-text">888-888-8888</p>
       <p class="contact-text">or send an email to:</p>
       <p class="contact-text">example@gmail.com</p>
     </div>
     <div class="social-icons">
-      <img src="path_to_your_images/facebook-icon.png" alt="Facebook Icon" />
-      <img src="path_to_your_images/instagram-icon.png" alt="Instagram Icon" />
-      <img src="path_to_your_images/linkedin-icon.png" alt="LinkedIn Icon" />
+      <i class="fa-brands fa-facebook fa-2xl"></i>
+      <i class="fa-brands fa-instagram fa-2xl"></i>
+      <i class="fa-brands fa-twitter fa-2xl"></i>
     </div>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
 .footer-container {
   background-color: $primary-color;
   color: white;
-  padding: 50px;
+  margin-top: 50px;
+  padding: 25px;
   text-align: center;
 }
 
@@ -34,7 +35,7 @@ export default {
   margin-bottom: 30px;
 }
 
-.social-icons img {
+.social-icons i {
   width: 30px;
   height: 30px;
   margin: 0 10px;

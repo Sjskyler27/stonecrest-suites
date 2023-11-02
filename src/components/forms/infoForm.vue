@@ -208,6 +208,7 @@ textarea.info_header:disabled {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  overflow: hidden;
 }
 textarea.content:disabled {
   color: #000;
@@ -216,5 +217,6 @@ textarea.content:disabled {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  overflow: hidden;
 }
 </style>

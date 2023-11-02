@@ -10,7 +10,7 @@
     <router-link to="/examples">
       <BaseButton style="margin-bottom: 10px">BOOK NOW!</BaseButton>
     </router-link>
-    <BaseCard>
+    <BaseCard class="info-container">
       <div v-for="(info, index) in infoList" :key="index">
         <infoForm :info="info" :isAdmin="false"></infoForm>
       </div>
@@ -94,15 +94,16 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 100vh; /* Set the container to occupy the full viewport height */
 }
-
+.info-container {
+  width: 300px;
+}
 .info-text {
-  width: 325px;
+  width: 280px;
 }
 
 .BaseCard {
-  width: 300px;
+  width: 280px;
 }
 
 p {
