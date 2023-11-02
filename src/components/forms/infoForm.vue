@@ -21,11 +21,13 @@
         ref="info_header"
         v-model="editedInfo.info_header"
         :disabled="!isAdmin"
+        rows="1"
       />
       <textarea
         ref="content"
         v-model="editedInfo.content"
         :disabled="!isAdmin"
+        rows="1"
       ></textarea>
     </span>
     <!-- Create, Edit, and Delete buttons -->

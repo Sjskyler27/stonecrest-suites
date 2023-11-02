@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import FAQEdit from '@/components/layouts/FAQEdit.vue';
+import FAQEdit from '@/components/forms/FAQEdit.vue';
 import infoForm from '@/components/forms/infoForm.vue';
 export default {
   components: {

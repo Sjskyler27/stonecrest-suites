@@ -57,6 +57,7 @@ export default {
   padding: 10px 20px;
   background-color: #fff;
   border-bottom: 2px solid $primary-color;
+  z-index: 9999; /* Ensure it appears on top of everything */
 }
 
 .logo-title {

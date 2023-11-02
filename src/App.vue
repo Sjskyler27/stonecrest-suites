@@ -8,10 +8,12 @@
 
 <script>
 import BaseMessage from './components/UI/BaseMessage.vue';
+import TheFooter from './components/layouts/TheFooter.vue';
 
 export default {
   components: {
     BaseMessage,
+    TheFooter,
   },
 };
 </script>
