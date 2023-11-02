@@ -19,9 +19,8 @@
     <h2>Edit The FAQ</h2>
     <div v-for="faq in faqList" :key="faq.FAQ_id" class="faq-item">
       <BaseCard>
-        <label :for="'faq-FAQ_header-' + faq.FAQ_id" class="faq-label"
-          >Question (ID: {{ faq.FAQ_id }}):</label
-        ><br />
+        <h2>Question (ID: {{ faq.FAQ_id }}):</h2>
+        <br />
         <textarea
           :id="'faq-FAQ_header-' + faq.FAQ_id"
           v-model="faq.FAQ_header"
@@ -223,22 +222,5 @@ export default {
 }
 .button {
   margin: 10px;
-}
-
-/* Vertical Track */
-::-webkit-scrollbar {
-  width: 8px; /* Set the width of the vertical scrollbar */
-  background-color: #f5f5f5; /* Background color of the vertical track */
-}
-
-/* Vertical Handle */
-::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the vertical scrollbar handle */
-  border-radius: 4px; /* Rounded corners for the vertical handle */
-}
-
-/* Vertical Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color of the vertical handle on hover */
 }
 </style>

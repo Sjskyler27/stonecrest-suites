@@ -88,7 +88,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .centered-container {
   display: flex;
   flex-direction: column;
@@ -103,14 +103,6 @@ export default {
 
 .BaseCard {
   width: 300px;
-}
-h2 {
-  color: #164686;
-  font-family: Inter;
-  font-size: 19px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
 }
 
 p {

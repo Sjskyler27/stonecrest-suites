@@ -1,21 +1,36 @@
+<!-- 
+  This is a component that represents the general info.
+  many components will follow the same format in this folder.
+  The component has three states that it might be in.
+  if the component is passed a object and Admin false
+  then it knows it is in 'read only mode' text areas become 
+  disabled and the content is styled to look good for reading
+  however if admin is true then text areas become etitable
+  and the update and delete buttons apear.
+  if the component is told admin true but sent no object then
+  it is in create mode. it has all blank data and shows the 
+  create button 
+
+ -->
 <template>
-  <div class="info-table">
-    <span v-if="isAdmin">
-      <h2>ID: {{ editedInfo.info_id }}</h2>
-      <input
+  <div>
+    <span>
+      <h2 v-if="isAdmin">ID: {{ editedInfo.info_id }}</h2>
+      <textarea
+        class="info_header"
+        ref="info_header"
         v-model="editedInfo.info_header"
         :disabled="!isAdmin"
-        v-if="isAdmin"
       />
-      <textarea v-model="editedInfo.content" :disabled="!isAdmin"></textarea>
+      <textarea
+        ref="content"
+        v-model="editedInfo.content"
+        :disabled="!isAdmin"
+      ></textarea>
     </span>
-    <span v-else>
-      <h2>{{ editedInfo.info_header }}</h2>
-      <p>{{ editedInfo.content }}</p>
-    </span>
-    <!-- Create Edit and Delete buttons -->
+    <!-- Create, Edit, and Delete buttons -->
     <BaseButton @click="createInfo" v-if="isAdmin && info.info_id == null">
-      Create
+      Add Info
     </BaseButton>
     <BaseButton @click="saveChanges" v-if="isAdmin && info.info_id != null">
       Update
@@ -54,7 +69,23 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL,
     };
   },
+  mounted() {
+    this.setHeight('content');
+    this.setHeight('info_header');
+  },
   methods: {
+    setHeight(ref) {
+      const content = this.$refs[ref];
+      console.log('ref = ', content);
+      if (content && !this.isAdmin) {
+        const contentHeight = content.scrollHeight; // add padding to content
+        const totalHeight = contentHeight;
+        // Set the height of the current textarea (based on the ref)
+        content.style.height = `${totalHeight}px`;
+      } else if (content) {
+        content.style.height = `${100}px`;
+      }
+    },
     async createInfo() {
       try {
         const newInfo = {
@@ -133,7 +164,6 @@ export default {
         );
 
         if (response.ok) {
-          // Data successfully deleted
           location.reload();
           alert('Deleted info');
         } else {
@@ -153,30 +183,36 @@ export default {
 };
 </script>
 
-<style scoped>
-.info-table {
-}
-
-input,
+<style scoped lang="scss">
 textarea {
   width: 100%;
-  padding: 5px;
-  margin: 5px 0;
-}
-/* Vertical Track */
-::-webkit-scrollbar {
-  width: 8px; /* Set the width of the vertical scrollbar */
-  background-color: #f5f5f5; /* Background color of the vertical track */
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  border: 2px solid $primary-color;
 }
 
-/* Vertical Handle */
-::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the vertical scrollbar handle */
-  border-radius: 4px; /* Rounded corners for the vertical handle */
+input:disabled,
+textarea:disabled {
+  pointer-events: none; /* Disable mouse events */
+  border: none;
+  background-color: transparent;
+  resize: none;
 }
-
-/* Vertical Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color of the vertical handle on hover */
+textarea.info_header:disabled {
+  color: $primary-color;
+  font-family: Inter;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+textarea.content:disabled {
+  color: #000;
+  font-family: Inika;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 </style>

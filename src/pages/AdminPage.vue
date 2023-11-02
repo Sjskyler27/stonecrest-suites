@@ -12,9 +12,10 @@
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
     </router-link>
-
-    <infoForm :info="false" :isAdmin="true"></infoForm>
-    <div v-for="(info, index) in infoList" :key="index">
+    <BaseCard style="width: 400px">
+      <infoForm :info="false" :isAdmin="true"></infoForm>
+    </BaseCard>
+    <div v-for="(info, index) in infoList" :key="index" class="info-containers">
       <BaseCard>
         <infoForm :info="info" :isAdmin="true"></infoForm>
       </BaseCard>
@@ -74,14 +75,8 @@ export default {
   text-align: center;
   height: 100vh; /* Set the container to occupy the full viewport height */
 }
-
-h2 {
-  color: $primary-color;
-  font-family: Inter;
-  font-size: 19px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+.info-containers {
+  width: 400px;
 }
 
 p {
