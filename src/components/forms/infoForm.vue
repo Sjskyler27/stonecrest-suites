@@ -200,6 +200,7 @@ textarea:disabled {
   border: none;
   background-color: transparent;
   resize: none;
+  overflow: hidden;
 }
 textarea.info_header:disabled {
   color: $primary-color;

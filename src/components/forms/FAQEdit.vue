@@ -210,7 +210,7 @@ export default {
 }
 .faq-admin {
   padding: 0px;
-  width: 400px;
+  width: 300px;
 }
 
 .faq-item {
