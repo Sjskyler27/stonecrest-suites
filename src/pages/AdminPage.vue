@@ -13,11 +13,11 @@
       <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
     </router-link>
     <BaseCard class="create-container">
-      <infoForm :info="false" :isAdmin="true"></infoForm>
+      <infoForm :info="false" isAdmin></infoForm>
     </BaseCard>
     <div v-for="(info, index) in infoList" :key="index" class="info-containers">
       <BaseCard>
-        <infoForm :info="info" :isAdmin="true"></infoForm>
+        <infoForm :info="info" isAdmin></infoForm>
       </BaseCard>
     </div>
     <FAQEdit></FAQEdit>
