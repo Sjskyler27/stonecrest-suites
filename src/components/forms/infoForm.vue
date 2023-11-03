@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { setHeight } from '@/assets/utils.js';
 export default {
   props: {
     info: Object,
@@ -72,22 +73,10 @@ export default {
     };
   },
   mounted() {
-    this.setHeight('content');
-    this.setHeight('info_header');
+    setHeight(this.$refs['info_header'], this.isAdmin, 40);
+    setHeight(this.$refs['content'], this.isAdmin, 150);
   },
   methods: {
-    setHeight(ref) {
-      const content = this.$refs[ref];
-      console.log('ref = ', content);
-      if (content && !this.isAdmin) {
-        const contentHeight = content.scrollHeight; // add padding to content
-        const totalHeight = contentHeight;
-        // Set the height of the current textarea (based on the ref)
-        content.style.height = `${totalHeight}px`;
-      } else if (content) {
-        content.style.height = `${100}px`;
-      }
-    },
     async createInfo() {
       try {
         const newInfo = {

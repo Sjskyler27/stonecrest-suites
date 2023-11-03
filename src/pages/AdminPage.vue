@@ -7,62 +7,47 @@
         ameneties.
       </p>
     </div>
-    <router-link to="/examples">
-      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
-      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
-      <BaseButton style="margin-bottom: 10px">CREATE ROOM</BaseButton>
-    </router-link>
-    <BaseCard class="create-container">
-      <infoForm :info="false" isAdmin></infoForm>
-    </BaseCard>
-    <div v-for="(info, index) in infoList" :key="index" class="info-containers">
-      <BaseCard>
-        <infoForm :info="info" isAdmin></infoForm>
-      </BaseCard>
-    </div>
-    <FAQEdit></FAQEdit>
+    <BaseButton style="margin-bottom: 10px" @click="changeView('info')"
+      >Edit Info</BaseButton
+    >
+    <BaseButton style="margin-bottom: 10px" @click="changeView('faq')"
+      >Edit Faq</BaseButton
+    >
+    <BaseButton style="margin-bottom: 10px" @click="changeView('room')"
+      >Edit Room</BaseButton
+    >
+    <BaseButton style="margin-bottom: 10px" @click="changeView('Ameneties')"
+      >Edit Ameneties</BaseButton
+    >
+    <BaseButton style="margin-bottom: 10px" @click="changeView('Location')"
+      >Edit Location</BaseButton
+    >
+    <BaseButton style="margin-bottom: 10px" @click="changeView('Reservations')"
+      >Edit Reservations</BaseButton
+    >
+
+    <InfoAdmin v-if="view == 'info'"></InfoAdmin>
+    <FAQEdit v-if="view == 'faq'"></FAQEdit>
   </div>
 </template>
 
 <script>
 import FAQEdit from '@/components/forms/FAQEdit.vue';
-import infoForm from '@/components/forms/infoForm.vue';
+import InfoAdmin from '@/components/admin-views/InfoAdmin.vue';
 export default {
   components: {
-    infoForm,
+    InfoAdmin,
     FAQEdit,
   },
   data() {
     return {
-      faqList: [], // Initialize an empty array for FAQ data
-      infoList: [],
-      apiUrl: process.env.VUE_APP_API_URL,
+      view: 'info',
     };
   },
-  created() {
-    this.fetchInfoData();
-  },
   methods: {
-    async fetchInfoData() {
-      try {
-        this.isLoading = true;
-        // console.log('env:', this.apiUrl);
-        const response = await fetch(this.apiUrl + '/info', {
-          method: 'GET',
-        })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-          })
-          .then(data => {
-            console.log(data);
-            const tempResults = [];
-            this.infoList = data; // Populate infoList with the response data
-          });
-      } catch (error) {
-        console.error('Error fetching info data:', error);
-      }
+    changeView(view) {
+      this.view = view;
+      console.log('view', this.view);
     },
   },
 };
