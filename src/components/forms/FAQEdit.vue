@@ -81,7 +81,7 @@ export default {
             this.faqList = data; // Populate faqList with the response data
           });
       } catch (error) {
-        console.error('Error fetching FAQ data:', error);
+        alert('Error fetching FAQ data:', error);
       }
     },
     async addFaq() {
@@ -103,18 +103,17 @@ export default {
           const responseData = await response.json();
           // Add the new FAQ to the list
           // Reload the page after a brief delay (you can adjust the delay as needed)
-          location.reload();
+          alert('Created new Faq');
           localStorage.setItem('message', 'New Message created');
           localStorage.setItem('messageType', 'success');
         } else {
-          console.error('Failed to add a new FAQ.');
-          location.reload();
+          alert('Failed to add a new FAQ.');
+
           localStorage.setItem('message', 'New Message failed to create');
           localStorage.setItem('messageType', 'error');
         }
       } catch (error) {
-        console.error('Error adding a new FAQ:', error);
-        location.reload();
+        alert('Error adding a new FAQ:', error);
         localStorage.setItem('message', 'New Message failed to create');
         localStorage.setItem('messageType', 'error');
       }
@@ -125,8 +124,8 @@ export default {
         const faqToUpdate = this.faqList.find(faq => faq.FAQ_id === faqId);
 
         if (!faqToUpdate) {
-          console.error(`FAQ with ID ${faqId} not found.`);
-          location.reload();
+          alert(`FAQ with ID ${faqId} not found.`);
+
           localStorage.setItem('message', 'message not found');
           localStorage.setItem('messageType', 'error');
 
@@ -147,20 +146,18 @@ export default {
         });
 
         if (response.ok) {
-          console.log(`FAQ with ID ${faqId} updated successfully.`);
+          alert(`FAQ with ID ${faqId} updated successfully.`);
 
-          location.reload();
           localStorage.setItem('message', `message ${faqId} Updated`);
           localStorage.setItem('messageType', 'success');
         } else {
-          console.error(`Failed to update FAQ with ID ${faqId}.`);
-          location.reload();
+          alert(`Failed to update FAQ with ID ${faqId}.`);
+
           localStorage.setItem('message', 'Message failed to update');
           localStorage.setItem('messageType', 'error');
         }
       } catch (error) {
-        console.error(`Error updating FAQ with ID ${faqId}:`, error);
-        location.reload();
+        alert(`Error updating FAQ with ID ${faqId}:`, error);
         localStorage.setItem('message', 'Message failed to update');
         localStorage.setItem('messageType', 'error');
       }
@@ -173,17 +170,16 @@ export default {
         });
 
         if (response.ok) {
-          console.log('Deleting FAQ with ID:', id);
+          alert('Deleting FAQ with ID:', id);
           console.log(response);
-          location.reload();
+
           localStorage.setItem('message', `message ${id} Deleted`);
           localStorage.setItem('messageType', 'success');
         } else {
-          console.error('Error with the response:', response.statusText);
+          alert('Error with the response:', response.statusText);
         }
       } catch (error) {
-        console.error('Error DELETING FAQ data:', error);
-        location.reload();
+        alert('Error DELETING FAQ data:', error);
         localStorage.setItem('message', 'Message failed to delete');
         localStorage.setItem('messageType', 'error');
       } finally {

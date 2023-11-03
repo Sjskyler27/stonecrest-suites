@@ -1,5 +1,5 @@
 <template>
-  <div class="message" :class="messageTypeClass" v-if="localMessage">
+  <div class="message" :class="messageTypeClass" v-if="false">
     <p>{{ localMessage }}</p>
     <!-- Confirm Button -->
     <button v-if="localType" @click="clearMessage">Confirm</button>
@@ -14,10 +14,11 @@ export default {
       localType: '',
     };
   },
-  created() {
-    // Retrieve message and messageType from localStorage when the component is created
-    this.localMessage = localStorage.getItem('message');
-    this.localType = localStorage.getItem('messageType');
+  localMessage() {
+    if (true) {
+      window.alert(this.localMessage);
+      console.log('update message');
+    }
   },
   methods: {
     clearMessage() {
@@ -25,8 +26,6 @@ export default {
       localStorage.removeItem('message');
       localStorage.removeItem('messageType');
       this.$emit('confirm'); // Emit a custom event to notify the parent that the message is confirmed
-
-      location.reload();
     },
   },
   computed: {

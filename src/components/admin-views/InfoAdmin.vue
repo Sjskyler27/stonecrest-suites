@@ -1,12 +1,21 @@
 <template>
   <h2>Edit Info</h2>
   <div class="centered-container">
+    <BasePageSpinner :isLoading="isLoading" />
     <BaseCard class="create-container">
-      <infoForm :info="false" :isAdmin="true"></infoForm>
+      <infoForm
+        :info="false"
+        :isAdmin="true"
+        @refresh="this.fetchInfoData"
+      ></infoForm>
     </BaseCard>
     <div v-for="(info, index) in infoList" :key="index" class="info-containers">
       <BaseCard>
-        <infoForm :info="info" :isAdmin="true"></infoForm>
+        <infoForm
+          :info="info"
+          :isAdmin="true"
+          @refresh="this.fetchInfoData"
+        ></infoForm>
       </BaseCard>
     </div>
   </div>
@@ -22,6 +31,7 @@ export default {
     return {
       infoList: [],
       apiUrl: process.env.VUE_APP_API_URL,
+      isLoading: false,
     };
   },
   created() {
@@ -29,6 +39,7 @@ export default {
   },
   methods: {
     async fetchInfoData() {
+      console.log('fetching info');
       try {
         this.isLoading = true;
         // console.log('env:', this.apiUrl);
@@ -37,6 +48,7 @@ export default {
         })
           .then(response => {
             if (response.ok) {
+              this.isLoading = false;
               return response.json();
             }
           })
@@ -46,6 +58,7 @@ export default {
             this.infoList = data; // Populate infoList with the response data
           });
       } catch (error) {
+        this.isLoading = false;
         console.error('Error fetching info data:', error);
       }
     },

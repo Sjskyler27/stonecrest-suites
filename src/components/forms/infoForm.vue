@@ -32,23 +32,30 @@
     </span>
     <!-- Create, Edit, and Delete buttons -->
     <BaseButton @click="createInfo" v-if="isAdmin && info.info_id == null">
-      Add Info
+      <BaseSpinner :isLoading="loadCreate" /><span v-if="!loadCreate">
+        Create
+      </span>
     </BaseButton>
     <BaseButton @click="saveChanges" v-if="isAdmin && info.info_id != null">
-      Update
+      <BaseSpinner :isLoading="loadUpdate" /><span v-if="!loadUpdate">
+        Update
+      </span>
     </BaseButton>
     <BaseButton
       class="flat"
       @click="deleteInfo"
       v-if="isAdmin && info.info_id != null"
     >
-      Delete
+      <BaseSpinner :isLoading="loadDelete" /><span v-if="!loadDelete">
+        Delete
+      </span>
     </BaseButton>
   </div>
 </template>
 
 <script>
 import { setHeight } from '@/assets/utils.js';
+import BaseSpinner from '../UI/BaseSpinner.vue';
 export default {
   props: {
     info: Object,
@@ -68,8 +75,10 @@ export default {
               info_header: this.info.info_header,
               content: this.info.content,
             },
-
       apiUrl: process.env.VUE_APP_API_URL,
+      loadDelete: false,
+      loadUpdate: false,
+      loadCreate: false,
     };
   },
   mounted() {
@@ -79,11 +88,11 @@ export default {
   methods: {
     async createInfo() {
       try {
+        this.loadCreate = true;
         const newInfo = {
-          info_header: this.editedInfo.info_header, // Set the question
+          info_header: this.editedInfo.info_header,
           content: this.editedInfo.content, // Set the answer
         };
-
         const response = await fetch(`${this.apiUrl}/info`, {
           method: 'POST',
           headers: {
@@ -91,31 +100,23 @@ export default {
           },
           body: JSON.stringify(newInfo),
         });
-
         if (response.ok) {
-          const responseData = await response.json();
-          location.reload();
-          localStorage.setItem('message', 'New Message created');
-          localStorage.setItem('messageType', 'success');
+          this.loadCreate = false;
+          alert('new info added');
+          // clear content
+          this.editedInfo.info_header = '';
+          this.editedInfo.content = '';
+          this.$emit('refresh');
         } else {
-          console.error('Failed to add a new info.');
-          location.reload();
-          localStorage.setItem('message', 'New Message failed to create');
-          localStorage.setItem('messageType', 'error');
+          alert('Failed to add a new info.');
         }
       } catch (error) {
-        console.error('Error adding a new info:', error);
-        location.reload();
-        localStorage.setItem(
-          'message',
-          `New Message failed to create Error: ${error} `
-        );
-        localStorage.setItem('messageType', 'error');
+        alert('Error adding a new info:', error);
       }
     },
-
     async saveChanges() {
       try {
+        this.loadUpdate = true;
         const response = await fetch(
           `${this.apiUrl}/info/${this.editedInfo.info_id}`,
           {
@@ -126,51 +127,38 @@ export default {
             body: JSON.stringify(this.editedInfo),
           }
         );
-
         if (response.ok) {
           // Data successfully updated
+          this.loadUpdate = false;
           alert('Saved changes');
-          location.reload();
         } else {
-          location.reload();
-          console.error('Failed to update info.');
-          localStorage.setItem('message', 'Failed to update info');
-          localStorage.setItem('messageType', 'error');
+          alert('Failed to update info.');
         }
       } catch (error) {
-        location.reload();
-        console.error('Error updating info:', error);
-        localStorage.setItem('message', `Error updating info: ${error}`);
-        localStorage.setItem('messageType', 'error');
+        alert('Error updating info:', error);
       }
     },
-
     async deleteInfo() {
       try {
+        this.loadDelete = true;
         const response = await fetch(
           `${this.apiUrl}/info/${this.info.info_id}`,
           {
             method: 'DELETE',
           }
         );
-
         if (response.ok) {
-          location.reload();
           alert('Deleted info');
+          this.$emit('refresh');
         } else {
-          location.reload();
-          console.error('Failed to delete info.');
-          localStorage.setItem('message', 'Failed to delete info');
-          localStorage.setItem('messageType', 'error');
+          alert('Failed to delete info.');
         }
       } catch (error) {
-        location.reload();
-        console.error('Error deleting info:', error);
-        localStorage.setItem('message', `Error deleting info: ${error}`);
-        localStorage.setItem('messageType', 'error');
+        alert('Error deleting info:', error);
       }
     },
   },
+  components: { BaseSpinner },
 };
 </script>
 

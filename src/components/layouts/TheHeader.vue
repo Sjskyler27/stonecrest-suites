@@ -86,6 +86,7 @@ export default {
 }
 
 .dropdown-menu {
+  margin-top: 8px;
   position: absolute;
   top: 100%;
   right: 0;
