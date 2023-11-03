@@ -81,7 +81,6 @@ export default {
 }
 
 .menu-icon {
-  padding: 7px;
   cursor: pointer;
   position: relative;
 }
