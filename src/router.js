@@ -1,5 +1,5 @@
 //import route specific components
-import ExamplePage from './pages/ExamplePage';
+import SelectionPage from './pages/SelectionPage';
 import HomePage from './pages/HomePage';
 import AdminPage from './pages/AdminPage';
 
@@ -9,7 +9,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: HomePage },
-    { path: '/examples', component: ExamplePage },
+    { path: '/selection', component: SelectionPage },
     { path: '/admin', component: AdminPage },
   ],
 });

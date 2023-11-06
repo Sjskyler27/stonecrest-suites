@@ -19,8 +19,8 @@
           Edit Room
         </li>
         <li
-          @click="changeView('Amenities')"
-          :class="{ active: view === 'Amenities' }"
+          @click="changeView('amenities')"
+          :class="{ active: view === 'amenities' }"
         >
           Edit Amenities
         </li>
@@ -31,14 +31,14 @@
           Edit Location
         </li>
         <li
-          @click="changeView('Reservations')"
-          :class="{ active: view === 'Reservations' }"
+          @click="changeView('reservations')"
+          :class="{ active: view === 'reservations' }"
         >
           Edit Reservations
         </li>
         <li
-          @click="changeView('Reservations')"
-          :class="{ active: view === 'Appearance' }"
+          @click="changeView('appearance')"
+          :class="{ active: view === 'appearance' }"
         >
           Edit Appearance
         </li>
@@ -47,6 +47,10 @@
     <div class="view">
       <InfoAdmin v-if="view == 'info'"></InfoAdmin>
       <FAQEdit v-if="view == 'faq'"></FAQEdit>
+      <LocationAdmin v-if="view == 'Location'"></LocationAdmin>
+      <RoomAdmin v-if="view == 'room'"></RoomAdmin>
+      <ReservationAdmin v-if="view == 'reservations'"></ReservationAdmin>
+      <AmenitiesAdmin v-if="view == 'amenities'"></AmenitiesAdmin>
     </div>
   </div>
 </template>
@@ -54,10 +58,18 @@
 <script>
 import FAQEdit from '@/components/forms/FAQEdit.vue';
 import InfoAdmin from '@/components/admin-views/InfoAdmin.vue';
+import LocationAdmin from '@/components/admin-views/LocationAdmin.vue';
+import RoomAdmin from '@/components/admin-views/RoomAdmin.vue';
+import ReservationAdmin from '@/components/admin-views/ReservationAdmin.vue';
+import AmenitiesAdmin from '@/components/admin-views/AmenitiesAdmin.vue';
 export default {
   components: {
     InfoAdmin,
     FAQEdit,
+    LocationAdmin,
+    RoomAdmin,
+    ReservationAdmin,
+    AmenitiesAdmin,
   },
   data() {
     return {

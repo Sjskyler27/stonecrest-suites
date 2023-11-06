@@ -7,7 +7,7 @@
         along with additional amenities to choose from.
       </p>
     </div>
-    <router-link to="/examples">
+    <router-link to="/selection">
       <BaseButton style="margin-bottom: 10px">BOOK NOW!</BaseButton>
     </router-link>
     <BaseCard class="info-container">
@@ -57,7 +57,6 @@ export default {
           })
           .then(data => {
             console.log(data);
-            const tempResults = [];
             this.faqList = data; // Populate faqList with the response data
           });
       } catch (error) {

@@ -1,26 +1,26 @@
 <template>
   <div>
-    <h2>Edit Rooms</h2>
+    <h2>Edit Reservations</h2>
     <div class="centered-container">
       <BasePageSpinner :isLoading="isLoading" />
       <BaseCard class="create-container">
-        <RoomForm
-          :room="false"
+        <ReservationForm
+          :reservation="false"
           :isAdmin="true"
-          @refresh="fetchRoomData"
-        ></RoomForm>
+          @refresh="fetchReservationData"
+        ></ReservationForm>
       </BaseCard>
       <div
-        v-for="(room, index) in roomList"
+        v-for="(reservation, index) in reservationList"
         :key="index"
-        class="room-containers"
+        class="reservation-containers"
       >
         <BaseCard>
-          <RoomForm
-            :room="room"
+          <ReservationForm
+            :reservation="reservation"
             :isAdmin="true"
-            @refresh="fetchRoomData"
-          ></RoomForm>
+            @refresh="fetchReservationData"
+          ></ReservationForm>
         </BaseCard>
       </div>
     </div>
@@ -28,27 +28,27 @@
 </template>
 
 <script>
-import RoomForm from '@/components/forms/RoomForm.vue';
+import ReservationForm from '@/components/forms/ReservationForm.vue';
 
 export default {
   components: {
-    RoomForm,
+    ReservationForm,
   },
   data() {
     return {
-      roomList: [],
+      reservationList: [],
       apiUrl: process.env.VUE_APP_API_URL,
       isLoading: false,
     };
   },
   created() {
-    this.fetchRoomData();
+    this.fetchReservationData();
   },
   methods: {
-    async fetchRoomData() {
+    async fetchReservationData() {
       try {
         this.isLoading = true;
-        const response = await fetch(this.apiUrl + '/rooms', {
+        const response = await fetch(`${this.apiUrl}/reservations`, {
           method: 'GET',
         })
           .then(response => {
@@ -58,12 +58,11 @@ export default {
             }
           })
           .then(data => {
-            console.log(data);
-            this.roomList = data;
+            this.reservationList = data;
           });
       } catch (error) {
         this.isLoading = false;
-        console.error('Error fetching room data:', error);
+        console.error('Error fetching reservation data:', error);
       }
     },
   },
@@ -77,7 +76,7 @@ export default {
   align-items: center;
   text-align: center;
 }
-.room-containers {
+.reservation-containers {
   width: 300px;
 }
 .create-container {

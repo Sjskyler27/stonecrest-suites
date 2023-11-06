@@ -108,9 +108,11 @@ export default {
           this.editedInfo.content = '';
           this.$emit('refresh');
         } else {
+          this.loadCreate = false;
           alert('Failed to add a new info.');
         }
       } catch (error) {
+        this.loadCreate = false;
         alert('Error adding a new info:', error);
       }
     },
@@ -132,9 +134,11 @@ export default {
           this.loadUpdate = false;
           alert('Saved changes');
         } else {
+          this.loadUpdate = false;
           alert('Failed to update info.');
         }
       } catch (error) {
+        this.loadUpdate = false;
         alert('Error updating info:', error);
       }
     },
@@ -148,12 +152,15 @@ export default {
           }
         );
         if (response.ok) {
+          this.loadDelete = false;
           alert('Deleted info');
           this.$emit('refresh');
         } else {
+          this.loadDelete = false;
           alert('Failed to delete info.');
         }
       } catch (error) {
+        this.loadDelete = false;
         alert('Error deleting info:', error);
       }
     },

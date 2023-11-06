@@ -1,49 +1,54 @@
 <template>
-  <h2>Edit Info</h2>
-  <div class="centered-container">
-    <BasePageSpinner :isLoading="isLoading" />
-    <BaseCard class="create-container">
-      <infoForm
-        :info="false"
-        :isAdmin="true"
-        @refresh="this.fetchInfoData"
-      ></infoForm>
-    </BaseCard>
-    <div v-for="(info, index) in infoList" :key="index" class="info-containers">
-      <BaseCard>
-        <infoForm
-          :info="info"
+  <div>
+    <h2>Edit Amenities</h2>
+    <div class="centered-container">
+      <BasePageSpinner :isLoading="isLoading" />
+      <BaseCard class="create-container">
+        <AmenitiesForm
+          :amenity="false"
           :isAdmin="true"
-          @refresh="this.fetchInfoData"
-        ></infoForm>
+          @refresh="fetchAmenitiesData"
+        ></AmenitiesForm>
       </BaseCard>
+      <div
+        v-for="(amenity, index) in amenityList"
+        :key="index"
+        class="amenity-containers"
+      >
+        <BaseCard>
+          <AmenitiesForm
+            :amenity="amenity"
+            :isAdmin="true"
+            @refresh="fetchAmenitiesData"
+          ></AmenitiesForm>
+        </BaseCard>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import infoForm from '@/components/forms/infoForm.vue';
+import AmenitiesForm from '../forms/AmenitiesForm..vue';
+
 export default {
   components: {
-    infoForm,
+    AmenitiesForm,
   },
   data() {
     return {
-      infoList: [],
+      amenityList: [],
       apiUrl: process.env.VUE_APP_API_URL,
       isLoading: false,
     };
   },
   created() {
-    this.fetchInfoData();
+    this.fetchAmenitiesData();
   },
   methods: {
-    async fetchInfoData() {
-      console.log('fetching info');
+    async fetchAmenitiesData() {
       try {
         this.isLoading = true;
-        // console.log('env:', this.apiUrl);
-        const response = await fetch(this.apiUrl + '/info', {
+        const response = await fetch(`${this.apiUrl}/amenities`, {
           method: 'GET',
         })
           .then(response => {
@@ -53,17 +58,17 @@ export default {
             }
           })
           .then(data => {
-            // console.log(data);
-            this.infoList = data; // Populate infoList with the response data
+            this.amenityList = data;
           });
       } catch (error) {
         this.isLoading = false;
-        console.error('Error fetching info data:', error);
+        console.error('Error fetching amenities data:', error);
       }
     },
   },
 };
 </script>
+
 <style scoped lang="scss">
 .centered-container {
   display: flex;
@@ -71,7 +76,7 @@ export default {
   align-items: center;
   text-align: center;
 }
-.info-containers {
+.amenity-containers {
   width: 300px;
 }
 .create-container {

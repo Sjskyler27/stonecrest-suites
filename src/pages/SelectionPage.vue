@@ -1,14 +1,5 @@
 <template>
-  <h2>Edit Locations</h2>
   <div class="centered-container">
-    <BasePageSpinner :isLoading="isLoading" />
-    <BaseCard class="create-container">
-      <LocationForm
-        :location="false"
-        :isAdmin="true"
-        @refresh="fetchLocationData"
-      ></LocationForm>
-    </BaseCard>
     <div
       v-for="(location, index) in locationList"
       :key="index"
@@ -17,7 +8,7 @@
       <BaseCard>
         <LocationForm
           :location="location"
-          :isAdmin="true"
+          :isAdmin="false"
           @refresh="fetchLocationData"
         ></LocationForm>
       </BaseCard>
@@ -66,19 +57,22 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
+<style scoped>
 .centered-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
-.location-containers {
+.info-container {
   width: 300px;
 }
-.create-container {
-  width: 300px;
+.info-text {
+  width: 280px;
+}
+
+.BaseCard {
+  width: 280px;
 }
 
 p {
@@ -88,5 +82,11 @@ p {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+.location-containers {
+  width: 300px;
+}
+.button {
+  margin-top: 2px;
 }
 </style>
