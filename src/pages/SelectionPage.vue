@@ -1,5 +1,16 @@
 <template>
   <div class="centered-container">
+    <div class="room-type">
+      <!-- Radio buttons to select room type -->
+      <label>
+        <input type="radio" v-model="roomType" value="office" />
+        Office
+      </label>
+      <label>
+        <input type="radio" v-model="roomType" value="conference" />
+        Conference
+      </label>
+    </div>
     <div
       v-for="(location, index) in locationList"
       :key="index"
@@ -27,6 +38,7 @@ export default {
       locationList: [],
       apiUrl: process.env.VUE_APP_API_URL,
       isLoading: false,
+      roomType: 'conference',
     };
   },
   created() {

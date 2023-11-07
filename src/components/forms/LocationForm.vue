@@ -198,6 +198,10 @@ export default {
         alert('Error deleting location:', error);
       }
     },
+    selectLocation() {
+      // Emit the selected location_id
+      this.$emit('locationSelected', this.location.location_id);
+    },
   },
   components: { BaseSpinner },
 };

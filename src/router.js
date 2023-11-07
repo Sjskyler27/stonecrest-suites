@@ -1,5 +1,6 @@
 //import route specific components
 import SelectionPage from './pages/SelectionPage';
+import RoomSelectionPage from './pages/RoomSelectionPage';
 import HomePage from './pages/HomePage';
 import AdminPage from './pages/AdminPage';
 
@@ -9,7 +10,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: HomePage },
-    { path: '/selection', component: SelectionPage },
+    { path: '/selection', component: RoomSelectionPage },
     { path: '/admin', component: AdminPage },
   ],
 });

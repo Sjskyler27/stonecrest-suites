@@ -2,72 +2,102 @@
   <div>
     <h2 v-if="isAdmin">Room ID: {{ editedRoom.room_id }}</h2>
     <span>
+      <label for="room_location_id" v-if="isAdmin">Location ID:</label>
       <input
         class="room-location_id"
         ref="room_location_id"
         v-model="editedRoom.location_id"
         :disabled="!isAdmin"
         placeholder="Room Location_ID"
+        id="room_location_id"
+        v-if="isAdmin"
       />
+      <label for="room-image-url" v-if="isAdmin">Image URL:</label>
+      <input
+        class="room-image-url"
+        ref="room_image_url"
+        v-model="editedRoom.image_url"
+        :disabled="!isAdmin"
+        placeholder="Image URL"
+        id="room-image-url"
+      />
+      <label for="room-name" v-if="isAdmin">Room Name:</label>
       <input
         class="room-name"
         ref="room_name"
         v-model="editedRoom.name"
         :disabled="!isAdmin"
         placeholder="Room Name"
+        id="room-name"
       />
-      <input
-        class="room-type"
-        ref="room_type"
-        v-model="editedRoom.type"
+      <span class="columns" v-if="!isAdmin">
+        <label for="room-type">Room Type:</label>
+        <div>
+          <input
+            class="room-type"
+            ref="room_type"
+            v-model="editedRoom.type"
+            :disabled="!isAdmin"
+            placeholder="Room Type"
+            id="room-type"
+          />
+        </div>
+      </span>
+      <span class="columns">
+        <label for="room-capacity">Capacity:</label>
+        <input
+          class="room-capacity"
+          ref="room_capacity"
+          v-model="editedRoom.capacity"
+          :disabled="!isAdmin"
+          placeholder="Capacity"
+          id="room-capacity"
+        />
+      </span>
+      <span class="columns">
+        <label for="room-square-feet">Square Feet:</label>
+        <input
+          class="room-square-feet"
+          ref="room_square_feet"
+          v-model="editedRoom.square_feet"
+          :disabled="!isAdmin"
+          placeholder="Square Feet"
+          id="room-square-feet"
+        />
+      </span>
+      <label for="room-description" v-if="isAdmin">Description:</label>
+      <textarea
+        class="room-description"
+        ref="room_description"
+        v-model="editedRoom.description"
         :disabled="!isAdmin"
-        placeholder="Room Type"
-      />
-      <input
-        class="room-capacity"
-        ref="room_capacity"
-        v-model="editedRoom.capacity"
+        placeholder="Description"
+        rows="2"
+        id="room-description"
+        v-if="isAdmin || !isAdmin & (this.editedRoom.description != '')"
+      ></textarea>
+      <label for="room-appliances">Appliances:</label>
+      <textarea
+        class="room-appliances"
+        ref="room_appliances"
+        v-model="editedRoom.appliances"
         :disabled="!isAdmin"
-        placeholder="Capacity"
-      />
-      <input
-        class="room-square-feet"
-        ref="room_square_feet"
-        v-model="editedRoom.square_feet"
-        :disabled="!isAdmin"
-        placeholder="Square Feet"
-      />
+        placeholder="Appliances"
+        rows="2"
+        id="room-appliances"
+      ></textarea>
+      <span class="columns">
+        <label for="room-price">Price:</label>
+        <input
+          class="room-price"
+          ref="room_price"
+          v-model="editedRoom.price"
+          :disabled="!isAdmin"
+          placeholder="Price"
+          id="room-price"
+        />
+      </span>
     </span>
-    <textarea
-      class="room-description"
-      ref="room_description"
-      v-model="editedRoom.description"
-      :disabled="!isAdmin"
-      placeholder="Description"
-      rows="3"
-    ></textarea>
-    <textarea
-      class="room-appliances"
-      ref="room_appliances"
-      v-model="editedRoom.appliances"
-      :disabled="!isAdmin"
-      placeholder="Appliances"
-      rows="3"
-    ></textarea>
-    <input
-      class="room-image-url"
-      ref="room_image_url"
-      v-model="editedRoom.image_url"
-      :disabled="!isAdmin"
-      placeholder="Image URL"
-    />
-    <input
-      class="room-price"
-      ref="room_price"
-      v-model="editedRoom.price"
-      :disabled="!isAdmin"
-      placeholder="Price"
-    />
     <BaseButton @click="createRoom" v-if="isAdmin && room.room_id == null">
       <BaseSpinner :isLoading="loadCreate" />
       <span v-if="!loadCreate">Create</span>
@@ -83,6 +113,10 @@
     >
       <BaseSpinner :isLoading="loadDelete" />
       <span v-if="!loadDelete">Delete</span>
+    </BaseButton>
+    <BaseButton @click="bookRoom" v-if="!isAdmin && room.room_id != null">
+      <BaseSpinner :isLoading="loadRoom" />
+      <span v-if="!loadRoom">Book Room</span>
     </BaseButton>
   </div>
 </template>
@@ -128,6 +162,7 @@ export default {
       loadDelete: false,
       loadUpdate: false,
       loadCreate: false,
+      loadRoom: false,
     };
   },
   mounted() {
@@ -135,8 +170,8 @@ export default {
     setHeight(this.$refs['room_type'], this.isAdmin, 40);
     setHeight(this.$refs['room_capacity'], this.isAdmin, 40);
     setHeight(this.$refs['room_square_feet'], this.isAdmin, 40);
-    setHeight(this.$refs['room_description'], this.isAdmin, 150);
-    setHeight(this.$refs['room_appliances'], this.isAdmin, 150);
+    setHeight(this.$refs['room_description'], this.isAdmin, 100);
+    setHeight(this.$refs['room_appliances'], this.isAdmin, 100);
     setHeight(this.$refs['room_image_url'], this.isAdmin, 40);
     setHeight(this.$refs['room_price'], this.isAdmin, 40);
   },
@@ -236,8 +271,20 @@ export default {
   components: { BaseSpinner },
 };
 </script>
-
 <style scoped lang="scss">
+.columns {
+  display: flex;
+  align-items: center; // This vertically aligns the label and input
+  justify-content: flex-start; // This aligns the label and input to the left
+}
+.columns.textarea {
+  margin: 0px;
+}
+label {
+  margin-right: 8px; // Adds some space between the label and the input
+  white-space: nowrap; // Prevents the label from wrapping
+}
+
 input,
 textarea {
   width: 100%;
@@ -245,26 +292,38 @@ textarea {
   font-size: 14px;
   resize: vertical;
   border: 2px solid $primary-color;
-  margin-bottom: 6px;
+  padding: 8px;
+  margin-bottom: 12px;
 }
 
 input:disabled,
 textarea:disabled {
   pointer-events: none; /* Disable mouse events */
-  border: none;
-  background-color: transparent;
+  border: 1px solid rgb(255, 255, 255);
+  background-color: #fff;
   resize: none;
   overflow: hidden;
+  margin-bottom: 0px;
 }
 
 textarea.room-description:disabled,
 textarea.room-appliances:disabled {
-  color: #000;
-  font-family: Inika;
+  color: #333;
+  font-family: Arial, sans-serif;
   font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  font-weight: 400;
+  line-height: 1.5;
   overflow: hidden;
+  background-color: #fff;
+}
+
+input.room-name:disabled {
+  color: $primary-color;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  overflow: hidden;
+  background-color: #fff;
 }
 </style>
