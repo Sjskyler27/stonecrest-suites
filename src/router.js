@@ -1,5 +1,4 @@
 //import route specific components
-import SelectionPage from './pages/SelectionPage';
 import RoomSelectionPage from './pages/RoomSelectionPage';
 import HomePage from './pages/HomePage';
 import AdminPage from './pages/AdminPage';

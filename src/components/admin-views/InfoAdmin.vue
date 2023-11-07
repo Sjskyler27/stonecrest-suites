@@ -9,14 +9,20 @@
         @refresh="this.fetchInfoData"
       ></infoForm>
     </BaseCard>
-    <div v-for="(info, index) in infoList" :key="index" class="info-containers">
-      <BaseCard>
-        <infoForm
-          :info="info"
-          :isAdmin="true"
-          @refresh="this.fetchInfoData"
-        ></infoForm>
-      </BaseCard>
+    <div class="cards-wrapper">
+      <div
+        v-for="(info, index) in infoList"
+        :key="index"
+        class="info-containers"
+      >
+        <BaseCard>
+          <infoForm
+            :info="info"
+            :isAdmin="true"
+            @refresh="this.fetchInfoData"
+          ></infoForm>
+        </BaseCard>
+      </div>
     </div>
   </div>
 </template>
@@ -85,5 +91,25 @@ p {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+@media (min-width: 768px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: normal;
+  }
+  .room-containers {
+    margin: 10px;
+  }
+}
+@media (min-width: 1250px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: normal;
+  }
+  .info-containers {
+    margin: 10px;
+  }
 }
 </style>

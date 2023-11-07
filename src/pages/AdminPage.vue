@@ -7,7 +7,7 @@
         amenities.
       </p>
     </div> -->
-    <div class="menu">
+    <div class="menu" ref="menu">
       <ul>
         <li @click="changeView('info')" :class="{ active: view === 'info' }">
           Edit Info
@@ -44,7 +44,7 @@
         </li>
       </ul>
     </div>
-    <div class="view">
+    <div class="view" ref="view">
       <InfoAdmin v-if="view == 'info'"></InfoAdmin>
       <FAQEdit v-if="view == 'faq'"></FAQEdit>
       <LocationAdmin v-if="view == 'Location'"></LocationAdmin>
@@ -76,7 +76,17 @@ export default {
       view: 'info',
     };
   },
+  mounted() {
+    this.setPadding();
+  },
   methods: {
+    setPadding() {
+      const menuElement = this.$refs.menu;
+      const viewElement = this.$refs.view;
+      console.log('padding', viewElement);
+      viewElement.style.paddingTop = `${menuElement.scrollHeight}px`;
+    },
+
     changeView(view) {
       this.view = view;
       console.log('view', this.view);
@@ -140,8 +150,5 @@ p {
       }
     }
   }
-}
-.view {
-  padding-top: 80px;
 }
 </style>

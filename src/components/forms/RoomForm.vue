@@ -2,16 +2,24 @@
   <div>
     <h2 v-if="isAdmin">Room ID: {{ editedRoom.room_id }}</h2>
     <span>
-      <label for="room_location_id" v-if="isAdmin">Location ID:</label>
-      <input
-        class="room-location_id"
-        ref="room_location_id"
-        v-model="editedRoom.location_id"
-        :disabled="!isAdmin"
-        placeholder="Room Location_ID"
-        id="room_location_id"
-        v-if="isAdmin"
-      />
+      <label for="room_location_id" v-if="isAdmin">Location:</label>
+      <div v-if="isAdmin">
+        <template v-for="location in locationList" :key="location">
+          <div class="columns">
+            <label :for="'location_id' + location.location_id">{{
+              location.location_name
+            }}</label>
+            <input
+              type="radio"
+              class="room-location_id"
+              :id="location.location_id"
+              v-model="editedRoom.location_id"
+              :value="location.location_id"
+              style="margin: 0px; width: 20%"
+            />
+          </div>
+        </template>
+      </div>
       <label for="room-image-url" v-if="isAdmin">Image URL:</label>
       <input
         class="room-image-url"
@@ -30,30 +38,44 @@
         placeholder="Room Name"
         id="room-name"
       />
-      <span class="columns" v-if="!isAdmin">
+      <div v-if="isAdmin">
         <label for="room-type">Room Type:</label>
         <div>
-          <input
-            class="room-type"
-            ref="room_type"
-            v-model="editedRoom.type"
-            :disabled="!isAdmin"
-            placeholder="Room Type"
-            id="room-type"
-          />
+          <label>
+            Conference
+            <input
+              type="radio"
+              v-model="editedRoom.type"
+              value="Conference"
+              name="room-type"
+              style="margin: 0px; width: 20%"
+            />
+          </label>
         </div>
-      </span>
-      <span class="columns">
-        <label for="room-capacity">Capacity:</label>
-        <input
-          class="room-capacity"
-          ref="room_capacity"
-          v-model="editedRoom.capacity"
-          :disabled="!isAdmin"
-          placeholder="Capacity"
-          id="room-capacity"
-        />
-      </span>
+        <div>
+          <label>
+            Office
+            <input
+              type="radio"
+              v-model="editedRoom.type"
+              value="Office"
+              name="room-type"
+              style="margin: 0px; width: 20%"
+            />
+          </label>
+        </div>
+        <span class="columns">
+          <label for="room-capacity">Capacity:</label>
+          <input
+            class="room-capacity"
+            ref="room_capacity"
+            v-model="editedRoom.capacity"
+            :disabled="!isAdmin"
+            placeholder="Capacity"
+            id="room-capacity"
+          />
+        </span>
+      </div>
       <span class="columns">
         <label for="room-square-feet">Square Feet:</label>
         <input
@@ -128,6 +150,7 @@ import BaseSpinner from '../UI/BaseSpinner.vue';
 export default {
   props: {
     room: Object,
+    locationList: Array,
     isAdmin: Boolean,
   },
   data() {
@@ -136,7 +159,7 @@ export default {
         this.room == false
           ? {
               room_id: 'Create New Room',
-              location_id: '',
+              location_id: '0',
               name: '',
               type: '',
               capacity: '',
@@ -167,7 +190,6 @@ export default {
   },
   mounted() {
     setHeight(this.$refs['room_name'], this.isAdmin, 40);
-    setHeight(this.$refs['room_type'], this.isAdmin, 40);
     setHeight(this.$refs['room_capacity'], this.isAdmin, 40);
     setHeight(this.$refs['room_square_feet'], this.isAdmin, 40);
     setHeight(this.$refs['room_description'], this.isAdmin, 100);
@@ -177,10 +199,12 @@ export default {
   },
   methods: {
     async createRoom() {
+      console.log('posting: ', this.editedRoom);
       try {
         this.loadCreate = true;
         const newRoom = {
           name: this.editedRoom.name,
+          location_id: this.editedRoom.location_id,
           type: this.editedRoom.type,
           capacity: this.editedRoom.capacity,
           square_feet: this.editedRoom.square_feet,
@@ -201,7 +225,7 @@ export default {
           alert('New room added');
           // Clear content
           this.editedRoom.name = '';
-          this.editedRoom.type = '';
+          (this.editedRoom.location_id = '0'), (this.editedRoom.type = '');
           this.editedRoom.capacity = '';
           this.editedRoom.square_feet = '';
           this.editedRoom.description = '';
@@ -235,6 +259,7 @@ export default {
           // Data successfully updated
           this.loadUpdate = false;
           alert('Saved changes');
+          this.$emit('refresh');
         } else {
           this.loadUpdate = false;
           alert('Failed to update room.');
@@ -280,6 +305,16 @@ export default {
 .columns.textarea {
   margin: 0px;
 }
+.radios {
+  display: grid;
+  align-items: left;
+  justify-content: left;
+}
+.radios.input {
+  margin-right: 20px;
+  margin-bottom: 0px;
+}
+
 label {
   margin-right: 8px; // Adds some space between the label and the input
   white-space: nowrap; // Prevents the label from wrapping
@@ -293,7 +328,8 @@ textarea {
   resize: vertical;
   border: 2px solid $primary-color;
   padding: 8px;
-  margin-bottom: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 input:disabled,

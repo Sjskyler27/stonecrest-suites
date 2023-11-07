@@ -7,45 +7,63 @@
         <RoomForm
           :room="false"
           :isAdmin="true"
+          :locationList="locationList"
           @refresh="fetchRoomData"
         ></RoomForm>
       </BaseCard>
-      <h2>Select a room type</h2>
-      <div class="room-type">
-        <!-- Radio buttons to select room type -->
-        <label>
-          <input type="radio" v-model="roomType" value="Office" />
-          Office
-        </label>
-        <label>
-          <input type="radio" v-model="roomType" value="Conference" />
-          Conference
-        </label>
+      <div v-if="location == null">
+        <h2>Select a room type</h2>
+        <div class="room-type">
+          <!-- Radio buttons to select room type -->
+          <label>
+            <input type="radio" v-model="roomType" value="Office" />
+            Office
+          </label>
+          <label>
+            <input type="radio" v-model="roomType" value="Conference" />
+            Conference
+          </label>
+        </div>
+        <div
+          v-for="location in locationList"
+          :key="location"
+          class="location-containers"
+        >
+          <BaseCard>
+            <LocationForm
+              :location="location"
+              :isAdmin="false"
+              @refresh="fetchLocationData"
+              @locationSelected="handleLocationSelected"
+            ></LocationForm>
+          </BaseCard>
+        </div>
       </div>
-      <div
-        v-for="(location, index) in locationList"
-        :key="index"
-        class="location-containers"
-      >
-        <BaseCard>
-          <LocationForm
-            :location="location"
-            :isAdmin="false"
-            @refresh="fetchLocationData"
-            @locationSelected="handleLocationSelected"
-          ></LocationForm>
-        </BaseCard>
-      </div>
-      <h2>Showing {{ roomType }} Rooms at {{ location }}</h2>
-      <div v-for="room in roomList" :key="room" class="room-containers">
-        <BaseCard>
-          <RoomForm
-            :room="room"
-            :isAdmin="true"
-            @refresh="fetchRoomData"
-          ></RoomForm>
-        </BaseCard>
-      </div>
+      <span v-if="location != null">
+        <BaseButton
+          @click="
+            {
+              {
+                location = null;
+              }
+            }
+          "
+          >Change Location or Type</BaseButton
+        >
+        <h2>Showing {{ roomType }} Rooms at {{ selectedLocationName }}</h2>
+        <div class="cards-wrapper">
+          <div v-for="room in roomList" :key="room" class="room-containers">
+            <BaseCard>
+              <RoomForm
+                :room="room"
+                :locationList="locationList"
+                :isAdmin="true"
+                @refresh="fetchRoomData"
+              ></RoomForm>
+            </BaseCard>
+          </div>
+        </div>
+      </span>
     </div>
   </div>
 </template>
@@ -65,12 +83,20 @@ export default {
       apiUrl: process.env.VUE_APP_API_URL,
       isLoading: false,
       locationList: [],
-      location: '1',
+      location: null,
       roomType: 'Office',
     };
   },
+  computed: {
+    selectedLocationName() {
+      const selectedLocation = this.locationList.find(
+        location => location.location_id === this.location
+      );
+      return selectedLocation ? selectedLocation.location_name : '';
+    },
+  },
   watch: {
-    roomType: 'fetchRoomData', // Watch roomType and call fetchRoomData when it changes
+    // roomType: 'fetchRoomData', // Watch roomType and call fetchRoomData when it changes
     location: 'fetchRoomData',
   },
   created() {
@@ -101,6 +127,7 @@ export default {
           })
           .then(data => {
             console.log(data);
+            this.isLoading = false;
             this.roomList = data;
           });
       } catch (error) {
@@ -147,6 +174,13 @@ export default {
 .create-container {
   width: 300px;
 }
+.cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  columns: 2;
+  align-items: center;
+  text-align: center;
+}
 
 p {
   color: #000;
@@ -180,5 +214,25 @@ p {
 }
 .button {
   margin-top: 2px;
+}
+@media (min-width: 768px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: normal;
+  }
+  .room-containers {
+    margin: 10px;
+  }
+}
+@media (min-width: 1250px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: normal;
+  }
+  .room-containers {
+    margin: 10px;
+  }
 }
 </style>

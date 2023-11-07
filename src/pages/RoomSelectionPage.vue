@@ -40,17 +40,21 @@
           "
           >Change Location or Type</BaseButton
         >
-        <h2>Showing {{ roomType }} Rooms at {{ location }}</h2>
-        <BasePageSpinner :isLoading="isLoading" />
+        <h2>
+          Showing longtyr {{ roomType }} Rooms at {{ selectedLocationName }}
+        </h2>
 
-        <div v-for="room in roomList" :key="room" class="room-containers">
-          <BaseCard>
-            <RoomForm
-              :room="room"
-              :isAdmin="false"
-              @refresh="fetchRoomData"
-            ></RoomForm>
-          </BaseCard>
+        <BasePageSpinner :isLoading="isLoading" />
+        <div class="cards-wrapper">
+          <div v-for="room in roomList" :key="room" class="room-containers">
+            <BaseCard>
+              <RoomForm
+                :room="room"
+                :isAdmin="false"
+                @refresh="fetchRoomData"
+              ></RoomForm>
+            </BaseCard>
+          </div>
         </div>
       </div>
     </div>
@@ -76,8 +80,16 @@ export default {
       roomType: 'Office',
     };
   },
+  computed: {
+    selectedLocationName() {
+      const selectedLocation = this.locationList.find(
+        location => location.location_id === this.location
+      );
+      return selectedLocation ? selectedLocation.location_name : '';
+    },
+  },
   watch: {
-    roomType: 'fetchRoomData', // Watch roomType and call fetchRoomData when it changes
+    // roomType: 'fetchRoomData', // Watch roomType and call fetchRoomData when it changes
     location: 'fetchRoomData',
   },
   created() {
@@ -108,6 +120,7 @@ export default {
             })
             .then(data => {
               console.log(data);
+              this.isLoading = false;
               this.roomList = data;
             });
         } catch (error) {
@@ -155,6 +168,12 @@ export default {
 .create-container {
   width: 300px;
 }
+.cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
 p {
   color: #000;
@@ -188,5 +207,25 @@ p {
 }
 .button {
   margin-top: 2px;
+}
+@media (min-width: 768px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: normal;
+  }
+  .room-containers {
+    margin: 10px;
+  }
+}
+@media (min-width: 1250px) {
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: normal;
+  }
+  .room-containers {
+    margin: 10px;
+  }
 }
 </style>

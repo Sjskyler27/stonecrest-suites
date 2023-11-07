@@ -1,6 +1,6 @@
 <template>
   <TheHeader class="TheHeader" title="SS"></TheHeader>
-  <div style="height: 110px"></div>
+  <div class="header-padding"></div>
   <BaseMessage />
 
   <router-view></router-view>
@@ -65,5 +65,13 @@ h2 {
 /* Vertical Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Color of the vertical handle on hover */
+}
+.header-padding {
+  height: 70px;
+}
+@media (min-width: 600px) {
+  .header-padding {
+    height: 110px;
+  }
 }
 </style>
