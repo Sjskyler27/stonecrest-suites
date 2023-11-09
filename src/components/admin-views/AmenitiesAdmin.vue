@@ -11,8 +11,8 @@
         ></AmenitiesForm>
       </BaseCard>
       <div
-        v-for="(amenity, index) in amenityList"
-        :key="index"
+        v-for="(amenity) in amenityList"
+        :key="amenity"
         class="amenity-containers"
       >
         <BaseCard>

@@ -15,8 +15,8 @@
           </label>
         </div>
         <div
-          v-for="(location, index) in locationList"
-          :key="index"
+          v-for="location in locationList"
+          :key="location"
           class="location-containers"
         >
           <BaseCard>

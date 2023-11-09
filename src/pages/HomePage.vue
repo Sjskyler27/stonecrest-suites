@@ -11,11 +11,11 @@
       <BaseButton style="margin-bottom: 10px">BOOK NOW!</BaseButton>
     </router-link>
     <BaseCard class="info-container">
-      <div v-for="(info, index) in infoList" :key="index">
+      <div v-for="(info) in infoList" :key="info">
         <infoForm :info="info" :isAdmin="false"></infoForm>
       </div>
     </BaseCard>
-    <FaqCard class="faq" v-for="(faq, index) in faqList" :key="index">
+    <FaqCard class="faq" v-for="(faq) in faqList" :key="faq">
       <template v-slot:header>
         {{ faq.FAQ_header }}
       </template>

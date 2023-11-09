@@ -100,7 +100,7 @@ export default {
     location: 'fetchRoomData',
   },
   created() {
-    this.fetchRoomData();
+    // this.fetchRoomData();
     this.fetchLocationData();
   },
   methods: {

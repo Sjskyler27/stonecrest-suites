@@ -7,12 +7,14 @@
         ref="user_id"
         v-model="editedReservation.user_id"
         :disabled="!isAdmin"
+        placeholder="user-id"
       />
       <input
         type="room-id"
         ref="room_id"
         v-model="editedReservation.room_id"
         :disabled="!isAdmin"
+        placeholder="room-id"
       />
       <input
         type="datetime-local"
@@ -27,6 +29,7 @@
         :disabled="!isAdmin"
       />
       <input
+        v-if="!reservation.reservation_id == null"
         type="text"
         ref="status"
         v-model="editedReservation.status"
@@ -97,16 +100,60 @@ export default {
       loadCreate: false,
     };
   },
+  created() {
+    this.formatTime();
+  },
   mounted() {
     setHeight(this.$refs['start_time'], this.isAdmin, 40);
     setHeight(this.$refs['end_time'], this.isAdmin, 40);
     setHeight(this.$refs['status'], this.isAdmin, 40);
   },
   methods: {
+    formatTime() {
+      // Assuming editedReservation.start_time and editedReservation.end_time are in the correct format
+      const startDateTime = new Date(this.editedReservation.start_time);
+      const endDateTime = new Date(this.editedReservation.end_time);
+
+      // Format the date-time values
+      const formattedStartTime = `${startDateTime.getFullYear()}-${(
+        startDateTime.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${startDateTime
+        .getDate()
+        .toString()
+        .padStart(2, '0')}T${startDateTime
+        .getHours()
+        .toString()
+        .padStart(2, '0')}:${startDateTime
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+      const formattedEndTime = `${endDateTime.getFullYear()}-${(
+        endDateTime.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${endDateTime
+        .getDate()
+        .toString()
+        .padStart(2, '0')}T${endDateTime
+        .getHours()
+        .toString()
+        .padStart(2, '0')}:${endDateTime
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+
+      // Bind the formatted values to the input fields
+      this.editedReservation.start_time = formattedStartTime;
+      this.editedReservation.end_time = formattedEndTime;
+    },
     async createReservation() {
       try {
         this.loadCreate = true;
         const newReservation = {
+          user_id: this.editedReservation.user_id,
+          room_id: this.editedReservation.room_id,
           start_time: this.editedReservation.start_time,
           end_time: this.editedReservation.end_time,
           status: this.editedReservation.status,
@@ -122,6 +169,8 @@ export default {
           this.loadCreate = false;
           alert('New reservation added');
           // clear content
+          this.editedReservation.user_id = '';
+          this.editedReservation.room_id = '';
           this.editedReservation.start_time = '';
           this.editedReservation.end_time = '';
           this.editedReservation.status = '';
@@ -192,6 +241,9 @@ input {
   border-radius: 4px;
   font-size: 14px;
   border: 2px solid $primary-color;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding: 3px;
 }
 
 input:disabled {

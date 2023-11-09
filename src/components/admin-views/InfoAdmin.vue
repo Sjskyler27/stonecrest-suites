@@ -10,11 +10,7 @@
       ></infoForm>
     </BaseCard>
     <div class="cards-wrapper">
-      <div
-        v-for="(info, index) in infoList"
-        :key="index"
-        class="info-containers"
-      >
+      <div v-for="info in infoList" :key="info" class="info-containers">
         <BaseCard>
           <infoForm
             :info="info"
