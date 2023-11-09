@@ -19,6 +19,7 @@
           Edit Room
         </li>
         <li
+          v-if="false"
           @click="changeView('amenities')"
           :class="{ active: view === 'amenities' }"
         >
