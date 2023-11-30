@@ -120,6 +120,14 @@
         />
       </span>
     </span>
+
+    <span>
+      <ConferenceCalendar
+        v-if="!isAdmin && room.room_id != null && type == 'Conference'"
+        :roomId="room.room_id"
+        :day="day"
+      ></ConferenceCalendar>
+    </span>
     <BaseButton @click="createRoom" v-if="isAdmin && room.room_id == null">
       <BaseSpinner :isLoading="loadCreate" />
       <span v-if="!loadCreate">Create</span>
@@ -146,12 +154,15 @@
 <script>
 import { setHeight } from '@/assets/utils.js';
 import BaseSpinner from '../UI/BaseSpinner.vue';
+import ConferenceCalendar from '../UI/ConferenceCalendar.vue';
 
 export default {
   props: {
     room: Object,
     locationList: Array,
     isAdmin: Boolean,
+    day: Date,
+    type: String,
   },
   data() {
     return {
@@ -293,7 +304,7 @@ export default {
       }
     },
   },
-  components: { BaseSpinner },
+  components: { BaseSpinner, ConferenceCalendar },
 };
 </script>
 <style scoped lang="scss">

@@ -14,6 +14,14 @@
             Conference
           </label>
         </div>
+        <span v-if="roomType == 'Conference'">
+          <h2 class="date-label">
+            Select a day in order to book a conference room
+          </h2>
+          <label>
+            <input type="date" v-model="day" />
+          </label>
+        </span>
         <div
           v-for="location in locationList"
           :key="location"
@@ -40,20 +48,22 @@
           "
           >Change Location or Type</BaseButton
         >
-        <h2>
-          Showing longtyr {{ roomType }} Rooms at {{ selectedLocationName }}
-        </h2>
+        <h2>Showing {{ roomType }} Rooms at {{ selectedLocationName }}</h2>
 
         <BasePageSpinner :isLoading="isLoading" />
-        <div class="cards-wrapper">
-          <div v-for="room in roomList" :key="room" class="room-containers">
-            <BaseCard>
-              <RoomForm
-                :room="room"
-                :isAdmin="false"
-                @refresh="fetchRoomData"
-              ></RoomForm>
-            </BaseCard>
+        <div lass="centered-container">
+          <div class="cards-wrapper">
+            <div v-for="room in roomList" :key="room" class="room-containers">
+              <BaseCard>
+                <RoomForm
+                  :room="room"
+                  :isAdmin="false"
+                  :type="roomType"
+                  :day="day"
+                  @refresh="fetchRoomData"
+                ></RoomForm>
+              </BaseCard>
+            </div>
           </div>
         </div>
       </div>
@@ -78,6 +88,7 @@ export default {
       locationList: [],
       location: null,
       roomType: 'Office',
+      day: null,
     };
   },
   computed: {
@@ -98,6 +109,7 @@ export default {
   },
   methods: {
     handleLocationSelected(locationId) {
+      console.log(this.day);
       this.location = locationId; // Update the location data property
       this.fetchRoomData(); // Fetch rooms for the updated location and room type
     },
@@ -173,6 +185,9 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+.date-label {
+  width: 300px;
 }
 
 p {

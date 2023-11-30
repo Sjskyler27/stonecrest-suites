@@ -115,42 +115,71 @@ export default {
       const endDateTime = new Date(this.editedReservation.end_time);
 
       // Format the date-time values
-      const formattedStartTime = `${startDateTime.getFullYear()}-${(
-        startDateTime.getMonth() + 1
+      const formattedStartTime = `${startDateTime.getUTCFullYear()}-${(
+        startDateTime.getUTCMonth() + 1
       )
         .toString()
         .padStart(2, '0')}-${startDateTime
-        .getDate()
+        .getUTCDate()
         .toString()
         .padStart(2, '0')}T${startDateTime
-        .getHours()
+        .getUTCHours()
         .toString()
         .padStart(2, '0')}:${startDateTime
-        .getMinutes()
+        .getUTCMinutes()
         .toString()
         .padStart(2, '0')}`;
-      const formattedEndTime = `${endDateTime.getFullYear()}-${(
-        endDateTime.getMonth() + 1
+      const formattedEndTime = `${endDateTime.getUTCFullYear()}-${(
+        endDateTime.getUTCMonth() + 1
       )
         .toString()
         .padStart(2, '0')}-${endDateTime
-        .getDate()
+        .getUTCDate()
         .toString()
         .padStart(2, '0')}T${endDateTime
-        .getHours()
+        .getUTCHours()
         .toString()
         .padStart(2, '0')}:${endDateTime
-        .getMinutes()
+        .getUTCMinutes()
         .toString()
         .padStart(2, '0')}`;
 
       // Bind the formatted values to the input fields
+      console.log('new start: ', formattedStartTime);
       this.editedReservation.start_time = formattedStartTime;
       this.editedReservation.end_time = formattedEndTime;
+    },
+    makeUTCFromLocal(localDateTime) {
+      // Create a Date object from the local date-time string
+      const localDate = new Date(localDateTime);
+
+      // Get the local components
+      const year = localDate.getFullYear();
+      const month = localDate.getMonth();
+      const day = localDate.getDate();
+      const hours = localDate.getHours();
+      const minutes = localDate.getMinutes();
+      const seconds = localDate.getSeconds();
+
+      // Create a new UTC date object with the same components
+      const utcDate = new Date(
+        Date.UTC(year, month, day, hours, minutes, seconds)
+      );
+
+      // Convert the UTC date to an ISO string in the desired format
+      const formattedUTC = utcDate.toISOString();
+
+      return formattedUTC;
     },
     async createReservation() {
       try {
         this.loadCreate = true;
+        this.editedReservation.start_time = this.makeUTCFromLocal(
+          this.editedReservation.start_time
+        );
+        this.editedReservation.end_time = this.makeUTCFromLocal(
+          this.editedReservation.end_time
+        );
         const newReservation = {
           user_id: this.editedReservation.user_id,
           room_id: this.editedReservation.room_id,
@@ -158,6 +187,7 @@ export default {
           end_time: this.editedReservation.end_time,
           status: this.editedReservation.status,
         };
+
         const response = await fetch(`${this.apiUrl}/reservations`, {
           method: 'POST',
           headers: {
@@ -187,6 +217,13 @@ export default {
     async saveChanges() {
       try {
         this.loadUpdate = true;
+
+        this.editedReservation.start_time = this.makeUTCFromLocal(
+          this.editedReservation.start_time
+        );
+        this.editedReservation.end_time = this.makeUTCFromLocal(
+          this.editedReservation.end_time
+        );
         const response = await fetch(
           `${this.apiUrl}/reservations/${this.editedReservation.reservation_id}`,
           {
@@ -207,6 +244,7 @@ export default {
       } catch (error) {
         alert('Error updating reservation:', error);
       }
+      this.formatTime();
     },
     async deleteReservation() {
       try {
