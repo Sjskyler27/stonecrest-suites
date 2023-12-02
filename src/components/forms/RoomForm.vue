@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 v-if="isAdmin">Room ID: {{ editedRoom.room_id }}</h2>
+    <h2>Room ID: {{ editedRoom.room_id }}</h2>
     <span>
       <label for="room_location_id" v-if="isAdmin">Location:</label>
       <div v-if="isAdmin">
@@ -126,6 +126,7 @@
         v-if="!isAdmin && room.room_id != null && type == 'Conference'"
         :roomId="room.room_id"
         :day="day"
+        @selectedTimeRange="handleSelectedTimeRange"
       ></ConferenceCalendar>
     </span>
     <BaseButton @click="createRoom" v-if="isAdmin && room.room_id == null">
@@ -143,10 +144,6 @@
     >
       <BaseSpinner :isLoading="loadDelete" />
       <span v-if="!loadDelete">Delete</span>
-    </BaseButton>
-    <BaseButton @click="bookRoom" v-if="!isAdmin && room.room_id != null">
-      <BaseSpinner :isLoading="loadRoom" />
-      <span v-if="!loadRoom">Book Room</span>
     </BaseButton>
   </div>
 </template>
@@ -302,6 +299,24 @@ export default {
         this.loadDelete = false;
         alert('Error deleting room:', error);
       }
+    },
+    handleSelectedTimeRange(startTime, endTime) {
+      console.log('Received start time:', startTime);
+
+      console.log('Received end time:', endTime);
+      window.location.href = `../checkout?startTime=${startTime}&endTime=${endTime}&room_id=${this.room.room_id}`;
+
+      // console.log('now', this.$router.currentRoute);
+      // not sure why $router is not working
+      // this.$router.push({
+      //   name: 'checkout',
+      //   // params: {
+      //   //   startTime: timeRange.startTime,
+      //   //   endTime: timeRange.endTime,
+      //   //   roomId: this.room.room_id,
+      //   // },
+      // });
+      // console.log('new', this.$router.currentRoute);
     },
   },
   components: { BaseSpinner, ConferenceCalendar },

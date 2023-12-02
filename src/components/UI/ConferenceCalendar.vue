@@ -15,6 +15,11 @@
         />
         {{ formattedTime(slot.start) }} - {{ formattedTime(slot.end) }}
       </label>
+      <br />
+      <BaseButton @click="checkAndEmitSelectedTimes">
+        <BaseSpinner :isLoading="loadRoom" />
+        <span v-if="!loadRoom">Book Room</span>
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -31,6 +36,8 @@ export default {
       timeSlots: [], // Time slots for the day
       selectedSlots: [], // Initialize selectedSlots
       apiUrl: process.env.VUE_APP_API_URL,
+      startTime: null,
+      endTime: null,
     };
   },
   created() {
@@ -133,6 +140,35 @@ export default {
       // Now, the timeSlots array contains the generated time slots
       this.timeSlots = timeSlots;
       console.log('slots: ', timeSlots);
+    },
+    checkAndEmitSelectedTimes() {
+      // Sort the selected slots by start time
+      const sortedSelectedSlots = [...this.selectedSlots].sort(
+        (a, b) => new Date(a.start) - new Date(b.start)
+      );
+
+      // Check for gaps
+      for (let i = 0; i < sortedSelectedSlots.length - 1; i++) {
+        const currentSlotEnd = new Date(sortedSelectedSlots[i].end);
+        const nextSlotStart = new Date(sortedSelectedSlots[i + 1].start);
+
+        if (currentSlotEnd < nextSlotStart) {
+          alert('Please do not leave gaps in your time selection.');
+          console.error('Error: There are gaps in the selection.');
+          return; // Early exit if a gap is found
+        }
+      }
+
+      // If no gaps, emit the start of the first slot and the end of the last slot
+      if (sortedSelectedSlots.length > 0) {
+        const startTime = sortedSelectedSlots[0].start;
+        const endTime = sortedSelectedSlots[sortedSelectedSlots.length - 1].end;
+        this.$emit('selectedTimeRange', startTime, endTime);
+
+        // Log the times in the console
+        console.log('Selected Start Time:', startTime);
+        console.log('Selected End Time:', endTime);
+      }
     },
   },
 };

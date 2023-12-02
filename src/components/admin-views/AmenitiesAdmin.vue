@@ -11,7 +11,7 @@
         ></AmenitiesForm>
       </BaseCard>
       <div
-        v-for="(amenity) in amenityList"
+        v-for="amenity in amenityList"
         :key="amenity"
         class="amenity-containers"
       >
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AmenitiesForm from '../forms/AmenitiesForm..vue';
+import AmenitiesForm from '../forms/AmenitiesForm.vue';
 
 export default {
   components: {
