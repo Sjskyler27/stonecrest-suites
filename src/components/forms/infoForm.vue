@@ -24,6 +24,7 @@
         rows="1"
       />
       <textarea
+        class="content"
         ref="content"
         v-model="editedInfo.content"
         :disabled="!isAdmin"
@@ -196,12 +197,13 @@ textarea.info_header:disabled {
   overflow: hidden;
 }
 textarea.content:disabled {
-  color: #000;
+  color: #000000;
   font-family: Inika;
-  font-size: 14px;
+  font-size: 16px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 200;
   line-height: normal;
   overflow: hidden;
+  margin-left: 9px;
 }
 </style>

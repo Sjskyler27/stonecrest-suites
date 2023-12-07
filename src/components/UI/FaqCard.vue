@@ -141,9 +141,9 @@ export default {
   color: #fff;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   font-family: Inika;
-  font-size: 16px;
+  font-size: 17px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
   overflow: hidden;
 }

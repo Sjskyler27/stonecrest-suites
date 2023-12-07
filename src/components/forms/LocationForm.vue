@@ -2,6 +2,8 @@
   <div>
     <span>
       <h2 v-if="isAdmin">Location ID: {{ editedLocation.location_id }}</h2>
+
+      <img class="location-image" v-if="!isAdmin" :src="editedLocation.image" />
       <input
         class="location_name"
         ref="location_name"
@@ -33,8 +35,18 @@
         :disabled="!isAdmin"
         placeholder="Postal Code"
       />
+      <input
+        v-if="isAdmin"
+        ref="image"
+        v-model="editedLocation.image"
+        :disabled="!isAdmin"
+        placeholder="image url"
+      />
     </span>
     <!-- Select, Create, Edit, and Delete buttons -->
+    <BaseButton v-if="!isAdmin && location.location_id != null" @click="map"
+      >MAPS
+    </BaseButton>
     <BaseButton
       @click="selectLocation"
       v-if="!isAdmin && location.location_id != null"
@@ -91,6 +103,7 @@ export default {
               city: '',
               state: '',
               postal_code: '',
+              image: '',
             }
           : {
               location_id: this.location.location_id,
@@ -99,6 +112,7 @@ export default {
               city: this.location.city,
               state: this.location.state,
               postal_code: this.location.postal_code,
+              image: this.location.image,
             },
       apiUrl: process.env.VUE_APP_API_URL,
       loadDelete: false,
@@ -113,6 +127,7 @@ export default {
     setHeight(this.$refs['city'], this.isAdmin, 40);
     setHeight(this.$refs['state'], this.isAdmin, 40);
     setHeight(this.$refs['postal_code'], this.isAdmin, 40);
+    setHeight(this.$refs['image'], this.isAdmin, 40);
   },
   methods: {
     async createLocation() {
@@ -124,6 +139,7 @@ export default {
           city: this.editedLocation.city,
           state: this.editedLocation.state,
           postal_code: this.editedLocation.postal_code,
+          image: this.editedLocation.image,
         };
         const response = await fetch(`${this.apiUrl}/locations`, {
           method: 'POST',
@@ -141,6 +157,7 @@ export default {
           this.editedLocation.city = '';
           this.editedLocation.state = '';
           this.editedLocation.postal_code = '';
+          this.editedLocation.image = '';
           this.$emit('refresh');
         } else {
           this.loadCreate = false;
@@ -202,6 +219,9 @@ export default {
       // Emit the selected location_id
       this.$emit('locationSelected', this.location.location_id);
     },
+    map() {
+      window.location.href = `https://www.google.com/maps/place/${this.location.address}+${this.location.city}+${this.location.state}+${this.location.postal_code}`;
+    },
   },
   components: { BaseSpinner },
 };
@@ -233,6 +253,9 @@ input.location_name:disabled {
   font-weight: 700;
   line-height: normal;
   overflow: hidden;
+}
+.location-image {
+  width: 268px;
 }
 
 /* Add styling for other input fields as needed */
