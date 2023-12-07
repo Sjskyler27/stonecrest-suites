@@ -1,5 +1,5 @@
 <template>
-  <div class="centered-container">
+  <div class="centered-container" v-if="isPasswordCorrect">
     <!-- <div class="info-text">
       <h2>WELCOME TO THE ADMIN PAGE</h2>
       <p>
@@ -7,6 +7,7 @@
         amenities.
       </p>
     </div> -->
+
     <div class="menu" ref="menu">
       <ul>
         <li @click="changeView('info')" :class="{ active: view === 'info' }">
@@ -54,6 +55,7 @@
       <AmenitiesAdmin v-if="view == 'amenities'"></AmenitiesAdmin>
     </div>
   </div>
+  <p v-else>You are not authorized to access this page</p>
 </template>
 
 <script>
@@ -75,10 +77,24 @@ export default {
   data() {
     return {
       view: 'info',
+      correctPassword: '1111',
+      enteredPassword: '',
+      isPasswordCorrect: false,
     };
   },
   mounted() {
     this.setPadding();
+  },
+  created() {
+    // Check if the correct password is stored in localStorage
+    const storedPassword = localStorage.getItem('adminPassword');
+
+    if (storedPassword === this.correctPassword) {
+      this.isPasswordCorrect = true;
+    } else {
+      // Password is not stored or incorrect, prompt for password
+      this.promptForPassword();
+    }
   },
   methods: {
     setPadding() {
@@ -98,6 +114,20 @@ export default {
         top: 0,
         behavior: 'smooth', // You can use 'auto' for instant scrolling
       });
+    },
+    promptForPassword() {
+      const enteredPassword = prompt('Enter the admin password:');
+
+      if (enteredPassword === this.correctPassword) {
+        // Password is correct, store it in localStorage
+        localStorage.setItem('adminPassword', enteredPassword);
+        this.isPasswordCorrect = true;
+      } else {
+        // Password is incorrect, you can handle this case as needed (e.g., show an error message)
+        alert('Incorrect password. Access denied.');
+        // You can also redirect to another page or take appropriate action here
+        window.location.href = '../';
+      }
     },
   },
 };

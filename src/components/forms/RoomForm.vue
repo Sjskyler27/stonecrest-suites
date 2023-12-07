@@ -22,6 +22,7 @@
       </div>
       <label for="room-image-url" v-if="isAdmin">Image URL:</label>
       <input
+        v-if="isAdmin"
         class="room-image-url"
         ref="room_image_url"
         v-model="editedRoom.image_url"
@@ -29,6 +30,7 @@
         placeholder="Image URL"
         id="room-image-url"
       />
+      <img :src="room.image_url" alt="Room Image" class="room-image" />
       <label for="room-name" v-if="isAdmin">Room Name:</label>
       <input
         class="room-name"
@@ -387,5 +389,8 @@ input.room-name:disabled {
   line-height: 1.5;
   overflow: hidden;
   background-color: #fff;
+}
+.room-image {
+  width: 268px;
 }
 </style>
