@@ -1,4 +1,5 @@
 <template>
+  <UserLogin v-if="showLogIn" @close="showLogIn = false"></UserLogin>
   <div class="centered-container">
     <BaseCard>
       <h2>Checkout</h2>
@@ -32,7 +33,12 @@
 </template>
 
 <script>
+import UserLogin from '../components/UI/UserLogin.vue';
+
 export default {
+  components: {
+    UserLogin,
+  },
   data() {
     return {
       startTime: '',
@@ -42,12 +48,19 @@ export default {
       showConfirmationModal: false,
       loadCreate: false,
       apiUrl: process.env.VUE_APP_API_URL,
+      showLogIn: false,
     };
   },
   created() {
     this.startTime = this.$route.query.startTime;
     this.endTime = this.$route.query.endTime;
     this.roomId = this.$route.query.room_id;
+    if (localStorage.getItem('userPhone') == '') {
+      this.showLogIn = true;
+    } else {
+      this.showLogIn = false;
+      this.phoneNumber = localStorage.getItem('userPhone');
+    }
   },
   methods: {
     formatDate(dateString) {
@@ -119,7 +132,9 @@ export default {
           await this.sendTextMessage(this.phoneNumber, confirmationMessage);
         } else {
           this.loadCreate = false;
-          alert('Failed to add a new reservation.');
+          alert(
+            'Failed to add a new reservation. Please make sure you have created an account with us.'
+          );
         }
       } catch (error) {
         this.loadCreate = false;

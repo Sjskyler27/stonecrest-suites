@@ -19,13 +19,13 @@
         <li @click="changeView('room')" :class="{ active: view === 'room' }">
           Edit Room
         </li>
-        <!-- <li
+        <li
           v-if="true"
           @click="changeView('amenities')"
           :class="{ active: view === 'amenities' }"
         >
           Edit Amenities
-        </li> -->
+        </li>
         <li
           @click="changeView('Location')"
           :class="{ active: view === 'Location' }"

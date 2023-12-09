@@ -1,6 +1,11 @@
 <template>
-  <UserLogin v-if="showLogIn" @close="showLogIn = false"></UserLogin>
   <header v-if="content" class="stonecrest-header">
+    <UserLogin v-if="showLogIn" @close="showLogIn = false"></UserLogin>
+    <EditAccount
+      v-if="showEdit"
+      @close="showEdit = false"
+      @deleted="logout"
+    ></EditAccount>
     <a href="/" class="logo-title" :style="{ color: content.primaryColor }">
       <img
         src="../../../public/SSR_Logo.png"
@@ -9,7 +14,7 @@
       />
       <h1>{{ content.title }}</h1>
     </a>
-    <div class="menu-container" @click="toggleMenu">
+    <div class="menu-container">
       <!-- <DarkToggle></DarkToggle> -->
       <div class="menu-icon">
         <HamburgerButton
@@ -28,7 +33,7 @@
           <!-- <router-link to="/profile">Profile</router-link> -->
           <!-- <router-link to="/support">Support</router-link> -->
           <router-link to="/about">About Us</router-link>
-          <router-link to="/account">Account</router-link>
+          <p v-if="isLoggedIn" @click="showEdit = true">Account</p>
           <p v-if="!isLoggedIn" @click="showLogIn = true">Login</p>
           <p v-else @click="logout">logout</p>
         </div>
@@ -42,12 +47,14 @@ import HamburgerButton from '../UI/HamburgerButton.vue';
 import DarkToggle from '../UI/DarkToggle.vue';
 import content from '../../assets/appearance.js';
 import UserLogin from '../UI/UserLogin.vue';
+import EditAccount from '../UI/EditAccount.vue';
 
 export default {
   components: {
     HamburgerButton,
     DarkToggle,
     UserLogin,
+    EditAccount,
   },
   name: 'StonecrestHeader',
   data() {
@@ -59,19 +66,29 @@ export default {
       isPasswordCorrect: false,
       isLoggedIn: false,
       showLogIn: false,
+      showEdit: false,
       isHamburgerActive: false,
     };
+  },
+  // Watch for changes in the route
+  watch: {
+    $route(to, from) {
+      // Handle route change here...
+      this.isHamburgerActive = false;
+      this.menuVisible = false;
+      console.log('Current route:', to.fullPath);
+    },
   },
   async created() {
     const storedPassword = localStorage.getItem('adminPassword');
     if (localStorage.getItem('userPhone') == '') {
-      const isLoggedIn = false;
+      this.isLoggedIn = false;
     } else {
       this.isLoggedIn = true;
     }
 
     if (storedPassword === this.correctPassword) {
-      this.isPasswordCorrect = false;
+      this.isPasswordCorrect = true;
     }
     try {
       this.content = await content;
@@ -88,12 +105,16 @@ export default {
       // }
     },
     toggleHamburger() {
-      console.log(this.isHamburgerActive);
+      // console.log(this.isHamburgerActive);
       this.isHamburgerActive = !this.isHamburgerActive;
-      console.log(this.isHamburgerActive);
+      this.menuVisible = !this.menuVisible;
+      // console.log(this.isHamburgerActive);
     },
     logout() {
       localStorage.setItem('userPhone', '');
+      localStorage.setItem('userEmail', '');
+      localStorage.setItem('firstName', '');
+      localStorage.setItem('lastName', '');
       this.isLoggedIn = false;
     },
   },
