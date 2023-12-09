@@ -1,24 +1,24 @@
 <template>
-  <header class="stonecrest-header">
-    <a href="/" class="logo-title">
+  <header v-if="content" class="stonecrest-header">
+    <a href="/" class="logo-title" :style="{ color: content.primaryColor }">
       <img
         src="../../../public/SSR_Logo.png"
         alt="Stonecrest Suites Logo"
         class="logo"
       />
-      <h1>Stonecrest Rentals</h1>
+      <h1>{{ content.title }}</h1>
     </a>
     <div class="menu-container" @click="toggleMenu">
       <!-- <DarkToggle></DarkToggle> -->
       <div class="menu-icon"><HamburgerButton></HamburgerButton></div>
       <transition name="slide-fade">
         <div v-if="menuVisible" class="dropdown-menu">
-          <router-link to="/settings">Settings</router-link>
-          <router-link to="/profile">Profile</router-link>
-          <router-link to="/account">Account</router-link>
-          <router-link to="/support">Support</router-link>
+          <router-link v-if="isPasswordCorrect" to="/admin">Admin</router-link>
+          <!-- <router-link to="/settings">Settings</router-link> -->
+          <!-- <router-link to="/profile">Profile</router-link> -->
+          <!-- <router-link to="/support">Support</router-link> -->
           <router-link to="/about">About Us</router-link>
-          <router-link to="/admin">Admin</router-link>
+          <router-link to="/account">Account</router-link>
           <router-link to="/logout">Logout</router-link>
         </div>
       </transition>
@@ -29,6 +29,8 @@
 <script>
 import HamburgerButton from '../UI/HamburgerButton.vue';
 import DarkToggle from '../UI/DarkToggle.vue';
+import content from '../../assets/appearance.js';
+
 export default {
   components: {
     HamburgerButton,
@@ -38,7 +40,24 @@ export default {
   data() {
     return {
       menuVisible: false,
+      content: null,
+      correctPassword: '1234',
+      enteredPassword: '',
+      isPasswordCorrect: false,
     };
+  },
+  async created() {
+    const storedPassword = localStorage.getItem('adminPassword');
+
+    if (storedPassword === this.correctPassword) {
+      this.isPasswordCorrect = true;
+    }
+    try {
+      this.content = await content;
+    } catch (error) {
+      // Handle error
+      console.error('Error:', error);
+    }
   },
   methods: {
     toggleMenu() {
@@ -65,7 +84,7 @@ export default {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: $primary-color;
+  /*color: $primary-color;*/
   font-family: Inika;
 }
 

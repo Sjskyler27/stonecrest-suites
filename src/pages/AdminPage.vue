@@ -19,13 +19,13 @@
         <li @click="changeView('room')" :class="{ active: view === 'room' }">
           Edit Room
         </li>
-        <li
+        <!-- <li
           v-if="true"
           @click="changeView('amenities')"
           :class="{ active: view === 'amenities' }"
         >
           Edit Amenities
-        </li>
+        </li> -->
         <li
           @click="changeView('Location')"
           :class="{ active: view === 'Location' }"
@@ -53,6 +53,7 @@
       <RoomAdmin v-if="view == 'room'"></RoomAdmin>
       <ReservationAdmin v-if="view == 'reservations'"></ReservationAdmin>
       <AmenitiesAdmin v-if="view == 'amenities'"></AmenitiesAdmin>
+      <AdminAppearance v-if="view == 'appearance'"></AdminAppearance>
     </div>
   </div>
   <p v-else>You are not authorized to access this page</p>
@@ -65,6 +66,7 @@ import LocationAdmin from '@/components/admin-views/LocationAdmin.vue';
 import RoomAdmin from '@/components/admin-views/RoomAdmin.vue';
 import ReservationAdmin from '@/components/admin-views/ReservationAdmin.vue';
 import AmenitiesAdmin from '@/components/admin-views/AmenitiesAdmin.vue';
+import AdminAppearance from '@/components/admin-views/AdminAppearance.vue';
 export default {
   components: {
     InfoAdmin,
@@ -73,11 +75,13 @@ export default {
     RoomAdmin,
     ReservationAdmin,
     AmenitiesAdmin,
+    AdminAppearance,
   },
   data() {
     return {
       view: 'info',
-      correctPassword: '1111',
+      // correctPassword: process.env.VUE_APP_ADMIN_PASSWORD,
+      correctPassword: '1234',
       enteredPassword: '',
       isPasswordCorrect: false,
     };
