@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggle" :class="{ active: active }" class="hamburger">
+  <div :class="{ active: isActive }" class="hamburger">
     <span></span>
     <span></span>
     <span></span>
@@ -8,6 +8,12 @@
 
 <script>
 export default {
+  props: {
+    isActive: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       active: false,

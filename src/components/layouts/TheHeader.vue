@@ -1,4 +1,5 @@
 <template>
+  <UserLogin v-if="showLogIn" @close="showLogIn = false"></UserLogin>
   <header v-if="content" class="stonecrest-header">
     <a href="/" class="logo-title" :style="{ color: content.primaryColor }">
       <img
@@ -10,16 +11,26 @@
     </a>
     <div class="menu-container" @click="toggleMenu">
       <!-- <DarkToggle></DarkToggle> -->
-      <div class="menu-icon"><HamburgerButton></HamburgerButton></div>
+      <div class="menu-icon">
+        <HamburgerButton
+          :isActive="isHamburgerActive"
+          @click="toggleHamburger"
+        ></HamburgerButton>
+      </div>
       <transition name="slide-fade">
-        <div v-if="menuVisible" class="dropdown-menu">
+        <div
+          v-if="menuVisible"
+          class="dropdown-menu"
+          @click="isHamburgerActive = false"
+        >
           <router-link v-if="isPasswordCorrect" to="/admin">Admin</router-link>
           <!-- <router-link to="/settings">Settings</router-link> -->
           <!-- <router-link to="/profile">Profile</router-link> -->
           <!-- <router-link to="/support">Support</router-link> -->
           <router-link to="/about">About Us</router-link>
           <router-link to="/account">Account</router-link>
-          <router-link to="/logout">Logout</router-link>
+          <p v-if="!isLoggedIn" @click="showLogIn = true">Login</p>
+          <p v-else @click="logout">logout</p>
         </div>
       </transition>
     </div>
@@ -30,11 +41,13 @@
 import HamburgerButton from '../UI/HamburgerButton.vue';
 import DarkToggle from '../UI/DarkToggle.vue';
 import content from '../../assets/appearance.js';
+import UserLogin from '../UI/UserLogin.vue';
 
 export default {
   components: {
     HamburgerButton,
     DarkToggle,
+    UserLogin,
   },
   name: 'StonecrestHeader',
   data() {
@@ -44,13 +57,21 @@ export default {
       correctPassword: '1234',
       enteredPassword: '',
       isPasswordCorrect: false,
+      isLoggedIn: false,
+      showLogIn: false,
+      isHamburgerActive: false,
     };
   },
   async created() {
     const storedPassword = localStorage.getItem('adminPassword');
+    if (localStorage.getItem('userPhone') == '') {
+      const isLoggedIn = false;
+    } else {
+      this.isLoggedIn = true;
+    }
 
     if (storedPassword === this.correctPassword) {
-      this.isPasswordCorrect = true;
+      this.isPasswordCorrect = false;
     }
     try {
       this.content = await content;
@@ -62,6 +83,18 @@ export default {
   methods: {
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+      // if (this.isHamburgerActive) {
+      //   this.isHamburgerActive = false;
+      // }
+    },
+    toggleHamburger() {
+      console.log(this.isHamburgerActive);
+      this.isHamburgerActive = !this.isHamburgerActive;
+      console.log(this.isHamburgerActive);
+    },
+    logout() {
+      localStorage.setItem('userPhone', '');
+      this.isLoggedIn = false;
     },
   },
 };
@@ -126,9 +159,17 @@ export default {
   text-decoration: none;
   color: black;
 }
+.dropdown-menu p {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
 
 .dropdown-menu a:hover,
-a.router-link-active {
+a.router-link-active,
+a.p {
   color: #f5f5f5;
 }
 /* Animation styles */

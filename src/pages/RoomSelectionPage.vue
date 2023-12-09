@@ -87,7 +87,7 @@ export default {
       isLoading: false,
       locationList: [],
       location: null,
-      roomType: 'Office',
+      roomType: 'Conference',
       day: null,
     };
   },

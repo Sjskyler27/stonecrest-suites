@@ -12,7 +12,7 @@
 
       <form @submit.prevent="submitForm" class="booking-form">
         <div class="form-group">
-          <label for="phone">Enter Your Phone Number: </label>
+          <label for="phone">Confirm Your Phone Number: </label>
           <input
             type="tel"
             id="phone"
