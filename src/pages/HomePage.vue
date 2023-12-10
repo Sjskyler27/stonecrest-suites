@@ -18,6 +18,7 @@
     <router-link to="/selection">
       <BaseButton style="margin-top: 20px">BOOK NOW!</BaseButton>
     </router-link>
+    <br />
     <h2>General Pricing Info</h2>
     <BaseCard class="info-container">
       <div v-for="info in infoList" :key="info">
@@ -25,6 +26,20 @@
       </div>
       <BaseButton style="margin-top: 20px">BOOK NOW!</BaseButton>
     </BaseCard>
+    <!-- <br />
+    <h2>Available Amenities</h2>
+    <BaseCard class="info-container">
+      <div>
+        <div v-for="amenityType in amenityTypeList" :key="amenityType">
+          <AmenityTypeForm
+            :amenity-type="amenityType"
+            :isAdmin="false"
+            @refresh="this.fetchAmenityTypeData"
+          ></AmenityTypeForm>
+        </div>
+      </div>
+    </BaseCard> -->
+    <br />
     <h2>Frequently Asked Questions</h2>
     <FaqCard class="faq" v-for="faq in faqList" :key="faq">
       <template v-slot:header>
@@ -38,12 +53,15 @@
 
 <script>
 import infoForm from '@/components/forms/infoForm.vue';
+import AmenityTypeForm from '@/components/forms/AmenityTypeForm.vue';
 export default {
   components: {
     infoForm,
+    AmenityTypeForm,
   },
   data() {
     return {
+      amenityTypeList: [],
       faqList: [], // Initialize an empty array for FAQ data
       infoList: [],
       apiUrl: process.env.VUE_APP_API_URL,
@@ -53,6 +71,7 @@ export default {
     // Make the GET request when the component is created
     this.fetchFAQData();
     this.fetchInfoData();
+    this.fetchAmenityTypeData();
   },
   methods: {
     async fetchFAQData() {
@@ -73,6 +92,28 @@ export default {
           });
       } catch (error) {
         console.error('Error fetching FAQ data:', error);
+      }
+    },
+    async fetchAmenityTypeData() {
+      console.log('fetching amenity types');
+      try {
+        this.isLoading = true;
+        const response = await fetch(`${this.apiUrl}/amenity-types`, {
+          method: 'GET',
+        })
+          .then(response => {
+            if (response.ok) {
+              this.isLoading = false;
+              return response.json();
+            }
+          })
+          .then(data => {
+            console.log(data);
+            this.amenityTypeList = data;
+          });
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error fetching amenity types data:', error);
       }
     },
     async fetchInfoData() {

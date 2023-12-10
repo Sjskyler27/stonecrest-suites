@@ -8,7 +8,7 @@
         <p><strong>Date:</strong> {{ formatDate(startTime) }}</p>
         <p><strong>Start Time:</strong> {{ formatTime(startTime) }}</p>
         <p><strong>End Time:</strong> {{ formatTime(endTime) }}</p>
-        <p><strong>Price:</strong> ${{ calculatePrice() }}</p>
+        <p><strong>Price:</strong> ${{ price }}</p>
       </div>
 
       <form @submit.prevent="submitForm" class="booking-form">
@@ -23,6 +23,24 @@
           />
         </div>
         <BaseButton type="submit">Confirm Booking</BaseButton>
+        <br />
+        <h2>Available Amenities</h2>
+        <div>
+          <div
+            v-for="amenityType in amenityTypeList"
+            :key="amenityType.type_id"
+          >
+            <label>
+              <input
+                type="checkbox"
+                v-model="selectedAmenities"
+                :value="amenityType"
+                @change="updatePrice()"
+              />
+              {{ amenityType.type_name }} (+$5)
+            </label>
+          </div>
+        </div>
       </form>
     </BaseCard>
   </div>
@@ -49,9 +67,14 @@ export default {
       loadCreate: false,
       apiUrl: process.env.VUE_APP_API_URL,
       showLogIn: false,
+      amenityTypeList: [],
+      selectedAmenities: [],
+      price: 0,
     };
   },
   created() {
+    // this.fetchRoomData();
+    this.fetchAmenityTypeData();
     this.startTime = this.$route.query.startTime;
     this.endTime = this.$route.query.endTime;
     this.roomId = this.$route.query.room_id;
@@ -62,10 +85,36 @@ export default {
       this.phoneNumber = localStorage.getItem('userPhone');
     }
   },
+  mounted() {
+    this.updatePrice();
+  },
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
       return date.toUTCString().split(' ', 4).join(' '); // Formats as a UTC date string
+    },
+    // async fetchRoomData() {},
+    async fetchAmenityTypeData() {
+      console.log('fetching amenity types');
+      try {
+        this.isLoading = true;
+        const response = await fetch(`${this.apiUrl}/amenity-types`, {
+          method: 'GET',
+        })
+          .then(response => {
+            if (response.ok) {
+              this.isLoading = false;
+              return response.json();
+            }
+          })
+          .then(data => {
+            console.log(data);
+            this.amenityTypeList = data;
+          });
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error fetching amenity types data:', error);
+      }
     },
     formatTime(dateString) {
       const date = new Date(dateString);
@@ -78,15 +127,7 @@ export default {
 
       return `${hours}:${minutes} ${ampm}`;
     },
-    calculatePrice() {
-      // Implement your price calculation logic here
-      // For example, a fixed rate per hour
-      const start = new Date(this.startTime);
-      const end = new Date(this.endTime);
-      const durationHours = (end - start) / 36e5; // Convert milliseconds to hours
-      const ratePerHour = 10; // Example rate per hour
-      return (durationHours * ratePerHour).toFixed(2);
-    },
+
     enforceNumericInput() {
       this.phoneNumber = this.phoneNumber.replace(/\D/g, '');
     },
@@ -141,6 +182,23 @@ export default {
         this.loadCreate = false;
         alert('Error adding a new reservation:', error);
       }
+    },
+    calculatePrice() {
+      // Implement your price calculation logic here
+      // For example, a fixed rate per hour
+      const start = new Date(this.startTime);
+      const end = new Date(this.endTime);
+      const durationHours = (end - start) / 36e5; // Convert milliseconds to hours
+      const ratePerHour = 10; // Example rate per hour
+      return (durationHours * ratePerHour).toFixed(2);
+    },
+    updatePrice() {
+      let totalPrice = parseFloat(this.calculatePrice()); // Convert to a float
+      // Add $5 for each selected amenity
+      for (const amenityType of this.selectedAmenities) {
+        totalPrice += 5;
+      }
+      this.price = totalPrice.toFixed(2); // Update the price with two decimal places
     },
     async sendTextMessage(phoneNumber, message) {
       // Placeholder for sending a text message
