@@ -81,10 +81,10 @@ export default {
   },
   async created() {
     const storedPassword = localStorage.getItem('adminPassword');
-    if (localStorage.getItem('userPhone') == '') {
+    if (localStorage.getItem('userPhone') > 1) {
       this.isLoggedIn = false;
     } else {
-      this.isLoggedIn = true;
+      this.isLoggedIn = false;
     }
 
     if (storedPassword === this.correctPassword) {
