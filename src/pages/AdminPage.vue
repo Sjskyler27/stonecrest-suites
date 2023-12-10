@@ -20,11 +20,16 @@
           Edit Room
         </li>
         <li
-          v-if="true"
           @click="changeView('amenities')"
           :class="{ active: view === 'amenities' }"
         >
           Edit Amenities
+        </li>
+        <li
+          @click="changeView('amenities-type')"
+          :class="{ active: view === 'amenities-type' }"
+        >
+          Add Amenity Types
         </li>
         <li
           @click="changeView('Location')"
@@ -53,6 +58,7 @@
       <RoomAdmin v-if="view == 'room'"></RoomAdmin>
       <ReservationAdmin v-if="view == 'reservations'"></ReservationAdmin>
       <AmenitiesAdmin v-if="view == 'amenities'"></AmenitiesAdmin>
+      <AmenityTypeAdmin v-if="view == 'amenities-type'"></AmenityTypeAdmin>
       <AdminAppearance v-if="view == 'appearance'"></AdminAppearance>
     </div>
   </div>
@@ -66,6 +72,7 @@ import LocationAdmin from '@/components/admin-views/LocationAdmin.vue';
 import RoomAdmin from '@/components/admin-views/RoomAdmin.vue';
 import ReservationAdmin from '@/components/admin-views/ReservationAdmin.vue';
 import AmenitiesAdmin from '@/components/admin-views/AmenitiesAdmin.vue';
+import AmenityTypeAdmin from '@/components/admin-views/AmenityTypeAdmin.vue';
 import AdminAppearance from '@/components/admin-views/AdminAppearance.vue';
 export default {
   components: {
@@ -75,6 +82,7 @@ export default {
     RoomAdmin,
     ReservationAdmin,
     AmenitiesAdmin,
+    AmenityTypeAdmin,
     AdminAppearance,
   },
   data() {

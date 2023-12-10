@@ -24,7 +24,7 @@
       </div>
       <transition name="slide-fade">
         <div
-          v-if="menuVisible"
+          v-show="isHamburgerActive"
           class="dropdown-menu"
           @click="isHamburgerActive = false"
         >
@@ -44,7 +44,7 @@
 
 <script>
 import HamburgerButton from '../UI/HamburgerButton.vue';
-import DarkToggle from '../UI/DarkToggle.vue';
+// import DarkToggle from '../UI/DarkToggle.vue';
 import content from '../../assets/appearance.js';
 import UserLogin from '../UI/UserLogin.vue';
 import EditAccount from '../UI/EditAccount.vue';
@@ -52,7 +52,7 @@ import EditAccount from '../UI/EditAccount.vue';
 export default {
   components: {
     HamburgerButton,
-    DarkToggle,
+    // DarkToggle,
     UserLogin,
     EditAccount,
   },

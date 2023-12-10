@@ -112,6 +112,7 @@ export default {
           room_id: this.roomId,
           start_time: this.startTime,
           end_time: this.endTime,
+          user_email: localStorage.getItem('userEmail'),
           status: 'upcoming',
         };
         console.log('creating reservation: ', newReservation);
