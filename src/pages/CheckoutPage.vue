@@ -70,14 +70,15 @@ export default {
       amenityTypeList: [],
       selectedAmenities: [],
       price: 0,
+      room: null,
     };
   },
   created() {
-    // this.fetchRoomData();
-    this.fetchAmenityTypeData();
     this.startTime = this.$route.query.startTime;
     this.endTime = this.$route.query.endTime;
     this.roomId = this.$route.query.room_id;
+    this.fetchRoomData();
+    this.fetchAmenityTypeData();
     if (localStorage.getItem('userPhone') == '') {
       this.showLogIn = true;
     } else {
@@ -93,7 +94,30 @@ export default {
       const date = new Date(dateString);
       return date.toUTCString().split(' ', 4).join(' '); // Formats as a UTC date string
     },
-    // async fetchRoomData() {},
+    async fetchRoomData() {
+      console.log('fetching room ', this.roomId);
+      try {
+        this.isLoading = true;
+        console.log(this.apiUrl + `/rooms/${this.roomId}`);
+        const response = await fetch(this.apiUrl + `/rooms/${this.roomId}`, {
+          method: 'GET',
+        })
+          .then(response => {
+            if (response.ok) {
+              this.isLoading = false;
+              return response.json();
+            }
+          })
+          .then(data => {
+            console.log(data);
+            this.isLoading = false;
+            this.room = data;
+          });
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error fetching room data:', error);
+      }
+    },
     async fetchAmenityTypeData() {
       console.log('fetching amenity types');
       try {
@@ -210,6 +234,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .centered-container {
+  padding-top: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
